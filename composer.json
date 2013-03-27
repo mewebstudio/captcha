@@ -17,9 +17,6 @@
 
     },
     "autoload": {
-        "classmap": [
-            "src/migrations"
-        ],
         "psr-0": {
             "Mews\\Captcha": "src/"
         }
