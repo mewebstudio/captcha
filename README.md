@@ -2,6 +2,9 @@
 
 A simple [Laravel 4](http://four.laravel.com/) service provider for including the [Captcha for Laravel 4](https://github.com/mewebstudio/captcha).
 
+## Preview
+![Preview](http://i.imgur.com/kfXYhlk.jpg?1)
+
 ## Installation
 
 The Captcha Service Provider can be installed via [Composer](http://getcomposer.org) by requiring the
@@ -82,9 +85,7 @@ Find the `aliases` key in `app/config/app.php`.
     });
 ```
 
-^_^                         
-
-![Preview](http://i.imgur.com/kfXYhlk.jpg?1)
+^_^
 
 ## Links
 
