@@ -84,6 +84,7 @@ Find the `aliases` key in `app/config/app.php`.
 
 ^_^                         
 
+![Preview](http://i.imgur.com/kfXYhlk.jpg?1)
 
 ## Links
 
