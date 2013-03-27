@@ -20,7 +20,7 @@ project's `composer.json`.
 
 Update your packages with ```composer update``` or install with ```composer install```.
 
-### [laravel4-powerpack](https://github.com/mewebstudio/captcha) pack requires!
+### [laravel4-powerpack](https://github.com/laravelbook/laravel4-powerpack) pack requires!
 
 ## Usage
 
