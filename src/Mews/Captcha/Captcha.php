@@ -23,7 +23,7 @@ class Captcha {
     protected static $singleton;
 
     /**
-     * @var  Captcha config instance of the Useragent::$config object
+     * @var  Captcha config instance of the Captcha::$config object
      */
     public static $config = array();
 
