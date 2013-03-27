@@ -39,22 +39,10 @@ class Captcha {
     	if ( ! Captcha::$singleton)
     	{
 
-    		if ( ! self::$config)
-    		{
-    			self::$config = Config::get('captcha::config');
-    		}
-    		if ( ! self::$assets)
-    		{
-    			self::$assets = __DIR__ . '/../../../public/assets/';
-    		}
-    		if ( ! self::$fonts)
-    		{
-    			self::$fonts = self::assets('fonts');
-    		}
-    		if ( ! self::$backgrounds)
-    		{
-    			self::$backgrounds = self::assets('backgrounds');
-    		}
+    		self::$config = Config::get('captcha::config');
+    		self::$assets = __DIR__ . '/../../../public/assets/';
+    		self::$fonts = self::assets('fonts');
+    		self::$backgrounds = self::assets('backgrounds');
 
     		Captcha::$singleton = new Captcha();
 
