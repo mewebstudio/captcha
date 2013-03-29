@@ -23,8 +23,6 @@ project's `composer.json`.
 
 Update your packages with ```composer update``` or install with ```composer install```.
 
-### [laravel4-powerpack](https://github.com/laravelbook/laravel4-powerpack) pack requires!
-
 ## Usage
 
 To use the Captcha Service Provider, you must register the provider when bootstrapping your Laravel application. There are
@@ -35,7 +33,6 @@ Find the `providers` key in `app/config/app.php` and register the Captcha Servic
 ```php
     'providers' => array(
         // ...
-        "LaravelBook\Laravel4Powerpack\Providers\PowerpackServiceProvider",
         'Mews\Captcha\CaptchaServiceProvider',
     )
 ```
@@ -45,9 +42,6 @@ Find the `aliases` key in `app/config/app.php`.
 ```php
     'aliases' => array(
         // ...
-        'HTML' => 'LaravelBook\Laravel4Powerpack\Facades\HTMLFacade',
-        'Form' => 'LaravelBook\Laravel4Powerpack\Facades\FormFacade',
-        'Str' => 'LaravelBook\Laravel4Powerpack\Facades\StrFacade',
         'Captcha' => 'Mews\Captcha\Facades\Captcha',
     )
 ```
@@ -75,8 +69,8 @@ Find the `aliases` key in `app/config/app.php`.
             }
         }
 
-        $content = Form::open(URL::to(Request::segment(1)));
-        $content .= '<p>' . HTML::image(Captcha::img(), 'Captcha image') . '</p>';
+        $content = Form::open(array(URL::to(Request::segment(1))));
+        $content .= '<p>' . Html::image(Captcha::img(), 'Captcha image') . '</p>';
         $content .= '<p>' . Form::text('captca') . '</p>';
         $content .= '<p>' . Form::submit('Check') . '</p>';
         $content .= '<p>' . Form::close() . '</p>';
