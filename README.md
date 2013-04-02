@@ -63,7 +63,7 @@ Find the `aliases` key in `app/config/app.php`.
 
         if (Request::getMethod() == 'POST')
         {
-            $rules =  array('captca' => array('required', 'captca'));
+            $rules =  array('captcha' => array('required', 'captcha'));
             $validator = Validator::make(Input::all(), $rules);
             if ($validator->fails())
             {
@@ -77,7 +77,7 @@ Find the `aliases` key in `app/config/app.php`.
 
         $content = Form::open(URL::to(Request::segment(1)));
         $content .= '<p>' . HTML::image(Captcha::img(), 'Captcha image') . '</p>';
-        $content .= '<p>' . Form::text('captca') . '</p>';
+        $content .= '<p>' . Form::text('captcha') . '</p>';
         $content .= '<p>' . Form::submit('Check') . '</p>';
         $content .= '<p>' . Form::close() . '</p>';
         return $content;
