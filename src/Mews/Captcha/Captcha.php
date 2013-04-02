@@ -65,7 +65,7 @@ class Captcha {
 
         static::$char = Str::random(static::$config['length'], static::$config['type']);
 
-        Session::put('captcha_hash', Hash::make(static::$config['sensitive'] === true ? static::$char : Str::lower(static::$char)));
+        Session::put('captchaHash', Hash::make(static::$config['sensitive'] === true ? static::$char : Str::lower(static::$char)));
 
     	static::$id = $id ? $id : static::$config['id'];
 
@@ -183,9 +183,9 @@ class Captcha {
     public static function check($value)
     {
 
-		$captcha_hash = Session::get('captcha_hash');
+		$captchaHash = Session::get('captchaHash');
 
-        return $value != null && $captcha_hash != null && Hash::check(static::$config['sensitive'] === true ? $value : Str::lower($value), $captcha_hash);
+        return $value != null && $captchaHash != null && Hash::check(static::$config['sensitive'] === true ? $value : Str::lower($value), $captchaHash);
 
     }
 
