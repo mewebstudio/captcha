@@ -1,5 +1,5 @@
 {
-    "name": "mews/captcha",
+    "name": "mewsl41/captcha",
     "description": "Captcha Package for Laravel 4",
     "keywords": ["L4", "Laravel 4", "Laravel", "Captcha", "security", "captcha image", "mecaptcha"],
     "homepage": "http://github.com/mewebstudio/captcha",
