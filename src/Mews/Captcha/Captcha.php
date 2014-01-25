@@ -6,11 +6,11 @@ use Config, Str, Session, Hash, URL;
  *
  * Laravel 4 Captcha package
  * @copyright Copyright (c) 2014 MeWebStudio
- * @version 1.1.0
+ * @version 1.0.1
  * @author Muharrem ERİN
  * @contact me@mewebstudio.com
  * @link http://www.mewebstudio.com
- * @date 2014-01-23
+ * @date 2014-01-25
  * @license http://www.opensource.org/licenses/mit-license.php The MIT License
  *
  */
