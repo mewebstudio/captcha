@@ -5,12 +5,12 @@ use Config, Str, Session, Hash, URL;
 /**
  *
  * Laravel 4 Captcha package
- * @copyright Copyright (c) 2013 MeWebStudio
- * @version 1.0.0
+ * @copyright Copyright (c) 2014 MeWebStudio
+ * @version 1.1.0
  * @author Muharrem ERİN
  * @contact me@mewebstudio.com
  * @link http://www.mewebstudio.com
- * @date 2013-03-27
+ * @date 2014-01-23
  * @license http://www.opensource.org/licenses/mit-license.php The MIT License
  *
  */
@@ -63,7 +63,7 @@ class Captcha {
     public static function create($id = null)
     {
 
-        static::$char = Str::random(static::$config['length'], static::$config['type']);
+        static::$char = Str::random(static::$config['length']);
 
         Session::put('captchaHash', Hash::make(static::$config['sensitive'] === true ? static::$char : Str::lower(static::$char)));
 
@@ -104,7 +104,7 @@ class Captcha {
         header('Pragma: no-cache');
         header("Content-type: image/jpg");
         header('Content-Disposition: inline; filename=' . static::$id . '.jpg');
-        imagejpeg($new_image, null, 80);
+        imagejpeg($new_image, null, static::$config['quality']);
         imagedestroy($new_image);
 
     }
