@@ -91,7 +91,6 @@ class Captcha {
 
         imagecopyresampled($new_image, $old_image, 0, 0, 0, 0, static::$config['width'], static::$config['height'], $bg_image_info[0], $bg_image_info[1]);
 
-        $bg = imagecolorallocate($new_image, 255, 255, 255);
         for ($i = 0; $i < strlen(static::$char); $i++)
         {
             $color_cols = explode(',', static::asset('colors'));
@@ -100,13 +99,10 @@ class Captcha {
         }
         imagealphablending($new_image, false);
 
-        header('Cache-Control: no-cache, no-store, max-age=0, must-revalidate');
-        header('Pragma: no-cache');
-        header("Content-type: image/jpg");
-        header('Content-Disposition: inline; filename=' . static::$id . '.jpg');
         imagejpeg($new_image, null, static::$config['quality']);
         imagedestroy($new_image);
 
+        return static::$id;
     }
 
     /**
@@ -175,7 +171,7 @@ class Captcha {
 
     /**
      * Checks if the supplied captcha test value matches the stored one
-     * 
+     *
      * @param	string	$value
      * @access	public
      * @return	bool
