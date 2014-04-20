@@ -75,7 +75,7 @@ class Captcha
 
         Session::put('captchaHash', Hash::make($this->config['sensitive'] === true ? $code : Str::lower($code)));
 
-        $bg_image = static::asset('backgrounds');
+        $bg_image = $this->asset('backgrounds');
 
         $bg_image_info = getimagesize($bg_image);
         if ($bg_image_info['mime'] == 'image/jpg' || $bg_image_info['mime'] == 'image/jpeg') {
