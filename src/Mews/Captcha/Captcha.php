@@ -51,7 +51,7 @@ class Captcha
 
     protected static function generateString($length)
     {
-        $characters = '23456789abcdefghjmnpqrstuvwxyzABCDEFGHJMNPQRSTUVWXYZ';
+        $characters = '2346789abcdefghjmnpqrtuxyzABCDEFGHJMNPQRTUXYZ';
         $charLength = strlen($characters);
         $randomString = '';
         for ($i = 0; $i < $length; ++$i) {
