@@ -5,6 +5,7 @@ use Session;
 use Hash;
 use URL;
 use Str;
+use Response;
 
 /**
  *
@@ -66,9 +67,9 @@ class Captcha
      * Typically, you won't use this function, but use the above img() function instead
      *
      * @access  public
-     * @return  img
+     * @return  Response
      */
-    public function create($id = null)
+    public function create()
     {
 
         $code= static::generateString($this->config['length']);
@@ -103,12 +104,16 @@ class Captcha
         }
         imagealphablending($new_image, false);
 
-        header('Cache-Control: no-cache, no-store, max-age=0, must-revalidate');
-        header('Pragma: no-cache');
-        header('Content-type: image/jpg');
-        header('Content-Disposition: inline; filename=captcha.jpg');
+        ob_start();
         imagejpeg($new_image, null, $this->config['quality']);
+        $content = ob_get_clean();
         imagedestroy($new_image);
+
+        return Response::make($content, 200)
+            ->header('cache-control', 'no-cache, no-store, max-age=0, must-revalidate')
+            ->header('pragma', 'no-cache')
+            ->header('content-type', 'image/jpeg')
+            ->header('content-disposition', 'inline; filename=captcha.jpg');
     }
 
     /**
