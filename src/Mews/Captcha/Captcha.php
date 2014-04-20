@@ -4,6 +4,7 @@ use Config;
 use Session;
 use Hash;
 use URL;
+use Str;
 
 /**
  *
@@ -93,10 +94,12 @@ class Captcha
 
         $bg = imagecolorallocate($new_image, 255, 255, 255);
         $codeLength = $this->config['length'];
+        $spaces = (array)$this->config['space'];
+        $space = $spaces[array_rand($spaces)];
         for ($i = 0; $i < $codeLength; ++$i) {
             $color_cols = explode(',', $this->asset('colors'));
             $fg = imagecolorallocate($new_image, trim($color_cols[0]), trim($color_cols[1]), trim($color_cols[2]));
-            imagettftext($new_image, $this->asset('fontsizes'), rand(-10, 15), 10 + ($i * $this->config['space']), rand($this->config['height'] - 10, $this->config['height'] - 5), $fg, $this->asset('fonts'), $code[$i]);
+            imagettftext($new_image, $this->asset('fontsizes'), rand(-10, 15), 10 + ($i * $space), rand($this->config['height'] - 10, $this->config['height'] - 5), $fg, $this->asset('fonts'), $code[$i]);
         }
         imagealphablending($new_image, false);
 
