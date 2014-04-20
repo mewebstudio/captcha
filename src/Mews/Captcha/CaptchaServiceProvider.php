@@ -22,12 +22,6 @@ class CaptchaServiceProvider extends ServiceProvider
 
         require __DIR__ . '/../../routes.php';
         require __DIR__ . '/../../validation.php';
-
-        $app = $this->app;
-
-        $this->app->finish(function () use ($app) {
-
-        });
     }
 
     /**
