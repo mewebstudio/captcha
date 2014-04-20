@@ -99,7 +99,7 @@ class Captcha
         for ($i = 0; $i < $codeLength; ++$i) {
             $color_cols = explode(',', $this->asset('colors'));
             $fg = imagecolorallocate($new_image, trim($color_cols[0]), trim($color_cols[1]), trim($color_cols[2]));
-            imagettftext($new_image, $this->asset('fontsizes'), rand(-10, 15), 10 + ($i * $space), rand($this->config['height'] - 10, $this->config['height'] - 5), $fg, $this->asset('fonts'), $code[$i]);
+            imagettftext($new_image, $this->asset('fontsizes'), mt_rand(-10, 15), 10 + ($i * $space), mt_rand($this->config['height'] - 10, $this->config['height'] - 5), $fg, $this->asset('fonts'), $code[$i]);
         }
         imagealphablending($new_image, false);
 
@@ -151,16 +151,16 @@ class Captcha
         $file = null;
 
         if ($type == 'fonts') {
-            $file = $this->fonts[rand(0, count($this->fonts) - 1)];
+            $file = $this->fonts[array_rand($this->fonts)];
         }
         if ($type == 'backgrounds') {
-            $file = $this->backgrounds[rand(0, count($this->backgrounds) - 1)];
+            $file = $this->backgrounds[array_rand($this->backgrounds)];
         }
         if ($type == 'fontsizes') {
-            $file = $this->config['fontsizes'][rand(0, count($this->config['fontsizes']) - 1)];
+            $file = $this->config['fontsizes'][array_rand($this->config['fontsizes'])];
         }
         if ($type == 'colors') {
-            $file = $this->config['colors'][rand(0, count($this->config['colors']) - 1)];
+            $file = $this->config['colors'][array_rand($this->config['colors'])];
         }
         return $file;
     }
