@@ -38,7 +38,8 @@ return array(
     'quality' => 75,
 
     // Set whether time-based check for the form will be included.
-    // values: boolean (true / false)
-    'time' => true,
+    // values: integer, valid time frame in seconds
+    // default: 600
+    'time' => 600, // default, 10mins
 
 );
