@@ -1,7 +1,6 @@
 <?php namespace Mews\Captcha;
 
 use Config;
-use Str;
 use Session;
 use Hash;
 use URL;
@@ -49,6 +48,17 @@ class Captcha
         return self::$singleton;
     }
 
+    protected static function generateString($length)
+    {
+        $characters = '23456789abcdefghjmnpqrstuvwxyzABCDEFGHJMNPQRSTUVWXYZ';
+        $charLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; ++$i) {
+            $randomString .= $characters[mt_rand(0, $charLength - 1)];
+        }
+        return $randomString;
+    }
+
     /**
      * Generates a captcha image, writing it to the output
      * It is used internally by this bundle when pointing to "/captcha" (see [vendor]\routes.php)
@@ -60,7 +70,7 @@ class Captcha
     public function create($id = null)
     {
 
-        $code= Str::random($this->config['length']);
+        $code= static::generateString($this->config['length']);
 
         Session::put('captchaHash', Hash::make($this->config['sensitive'] === true ? $code : Str::lower($code)));
 
