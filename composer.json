@@ -19,6 +19,5 @@
         "psr-0": {
             "Mews\\Captcha": "src/"
         }
-    },
-    "minimum-stability": "dev"
+    }
 }
