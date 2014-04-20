@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<phpunit
+    bootstrap="bootstrap.php"
+    colors="true"
+>
+
+    <filter>
+        <blacklist>
+            <directory>../vendor</directory>
+            <directory>../test</directory>
+        </blacklist>
+    </filter>
+
+
+    <testsuites>
+        <testsuite>
+            <directory suffix="Test.php">.</directory>
+        </testsuite>
+    </testsuites>
+
+    <logging>
+        <log type="coverage-text" target="php://stdout" showUncoveredFiles="true"/>
+    </logging>
+
+</phpunit>
