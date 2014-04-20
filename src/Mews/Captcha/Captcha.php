@@ -118,31 +118,15 @@ class Captcha
     protected function hashMake($code)
     {
         $code = $this->config['sensitive'] ? $code : Str::lower($code);
-        if ($this->config['time']) {
-            $code = time() . $code;
-        }
-        $code .= Config::get('app.key');
-        return Hash::make($code);
+        $key = Config::get('app.key');
+        return Hash::make($code . $key);
     }
 
     protected function hashCheck($code, $hash)
     {
         $code = $this->config['sensitive'] ? $code : Str::lower($code);
         $key = Config::get('app.key');
-        $result = false;
-        if ($this->config['time']) {
-            $now = time();
-            $limit = $now - $this->config['time'];
-            for ($time = $now; $time > $limit; --$time) {
-                $result = Hash::check($time . $code . $key, $hash);
-                if ($result) {
-                    break;
-                }
-            }
-        } else {
-            $result = Hash::check($code . $key, $hash);
-        }
-        return $result;
+        return Hash::check($code . $key, $hash);
     }
 
     /**
