@@ -6,6 +6,11 @@ return array(
     // values: array of integers
     'fontsizes' => array(15, 16, 17, 18, 19, 20),
 
+    // Set the captcha type
+    // values: 'alnum', 'num'
+    // default: 'alnum'
+    'type' => 'alnum',
+
     // Set the number of characters in the captcha code
     // values: integer
     // default: 6

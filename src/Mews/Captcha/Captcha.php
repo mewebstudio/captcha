@@ -50,9 +50,8 @@ class Captcha
         return self::$singleton;
     }
 
-    protected static function generateString($length)
+    protected static function generateString($length, $characters = '2346789abcdefghjmnpqrtuxyzABCDEFGHJMNPQRTUXYZ')
     {
-        $characters = '2346789abcdefghjmnpqrtuxyzABCDEFGHJMNPQRTUXYZ';
         $charLength = strlen($characters);
         $randomString = '';
         for ($i = 0; $i < $length; ++$i) {
@@ -71,8 +70,16 @@ class Captcha
      */
     public function create()
     {
+        switch($this->config['type'])
+        {
+            case 'num':
+                $code = static::generateString($this->config['length'], '1234567890');
+                break;
+            default:
+                $code = static::generateString($this->config['length']);
+                break;
+        }
 
-        $code = static::generateString($this->config['length']);
         Session::put('captchaHash', $this->hashMake($code));
 
         $bg_image = $this->asset('backgrounds');
