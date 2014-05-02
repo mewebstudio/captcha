@@ -6,6 +6,7 @@ use Hash;
 use URL;
 use Str;
 use Response;
+use Request;
 
 /**
  *
@@ -80,7 +81,7 @@ class Captcha
                 break;
         }
 
-        Session::put('captchaHash', $this->hashMake($code));
+        Session::put('captchaHash.' . Hash::make(Request::referrer()), $this->hashMake($code));
 
         $bg_image = $this->asset('backgrounds');
 
@@ -199,7 +200,7 @@ class Captcha
      */
     public function check($value)
     {
-        $captchaHash = Session::get('captchaHash');
+        $captchaHash = Session::get('captchaHash.' . Hash::make(Request::referrer()));
 
         $result = $value != null
             && $captchaHash != null
