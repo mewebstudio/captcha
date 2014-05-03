@@ -6,7 +6,6 @@ use Hash;
 use URL;
 use Str;
 use Response;
-use Request;
 
 /**
  *
@@ -69,7 +68,7 @@ class Captcha
      * @access  public
      * @return  Response
      */
-    public function create()
+    public function create($formId = null)
     {
         switch($this->config['type'])
         {
@@ -81,7 +80,10 @@ class Captcha
                 break;
         }
 
-        Session::put('captchaHash.' . Hash::make(URL::previous()), $this->hashMake($code));
+        if (!$formId) {
+            $formId = hash('sha256', URL::previous());
+        }
+        Session::put('captchaHash.' . $formId, $this->hashMake($code));
 
         $bg_image = $this->asset('backgrounds');
 
@@ -195,12 +197,16 @@ class Captcha
      * Checks if the supplied captcha test value matches the stored one
      *
      * @param   string  $value
+     * @param   string  $formId
      * @access  public
      * @return  bool
      */
-    public function check($value)
+    public function check($value, $formId = null)
     {
-        $captchaHash = Session::get('captchaHash.' . Hash::make(URL::previous()));
+        if (!$formId) {
+            $formId = hash('sha256', URL::previous());
+        }
+        $captchaHash = Session::get('captchaHash.' . $formId);
 
         $result = $value != null
             && $captchaHash != null
@@ -220,8 +226,8 @@ class Captcha
      * @access  public
      * @return  string
      */
-    public function img()
+    public function img($formId = null)
     {
-        return URL::to('captcha?' . mt_rand(100000, 999999));
+        return URL::to('captcha?' . ($formId ? 'id=' . $formId . '&' : '') . mt_rand(100000, 999999));
     }
 }
