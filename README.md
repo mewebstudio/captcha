@@ -21,6 +21,25 @@ project's `composer.json`.
 }
 ```
 
+###Updated Installation
+
+In order to use [mauris's](https://github.com/mauris/captcha) fork, the repository meeds to be added into the `composer.json` in the following manner:
+
+```json
+{
+    "require": {
+        "laravel/framework": "4.0.*",
+        "mews/captcha": "1.0.*"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/mauris/captcha"
+        }
+    ]
+}
+```
+
 Update your packages with ```composer update``` or install with ```composer install```.
 
 ## Usage
