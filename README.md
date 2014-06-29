@@ -14,7 +14,7 @@ project's `composer.json`.
 ```json
 {
     "require": {
-        "laravel/framework": "4.0.*",
+        "laravel/framework": "4.1.*",
         "mews/captcha": "dev-master"
     },
     "minimum-stability": "dev"
@@ -28,7 +28,7 @@ In order to use [mauris's](https://github.com/mauris/captcha) fork, the reposito
 ```json
 {
     "require": {
-        "laravel/framework": "4.0.*",
+        "laravel/framework": "4.1.*",
         "mews/captcha": "1.0.*"
     },
     "repositories": [
