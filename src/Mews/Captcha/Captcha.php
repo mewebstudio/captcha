@@ -99,7 +99,7 @@ class Captcha {
             imagettftext($new_image, static::asset('fontsizes'), rand(-10, 15), 10 + ($i * static::$config['space']), rand(static::$config['height'] - 10, static::$config['height'] - 5), $fg, static::asset('fonts'), static::$char[$i]);
         }
         imagealphablending($new_image, false);
-
+        ob_end_clean();
         header('Cache-Control: no-cache, no-store, max-age=0, must-revalidate');
         header('Pragma: no-cache');
         header("Content-type: image/jpg");
