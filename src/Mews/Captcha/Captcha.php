@@ -103,7 +103,7 @@ class Captcha {
         header('Cache-Control: no-cache, no-store, max-age=0, must-revalidate');
         header('Pragma: no-cache');
         header("Content-type: image/jpg");
-        header('Content-Disposition: inline; filename=' . static::$id . '.jpg');
+        header('Content-Disposition: attachment; filename=' . static::$id . '.jpg');
         imagejpeg($new_image, null, static::$config['quality']);
         imagedestroy($new_image);
 
@@ -175,7 +175,7 @@ class Captcha {
 
     /**
      * Checks if the supplied captcha test value matches the stored one
-     * 
+     *
      * @param	string	$value
      * @access	public
      * @return	bool
@@ -199,7 +199,9 @@ class Captcha {
      */
     public static function img() {
 
-		return URL::to('captcha?' . mt_rand(100000, 999999));
+        return URL::route('captcha', [
+            'rand' => mt_rand(100000, 999999)
+        ]);
 
     }
 

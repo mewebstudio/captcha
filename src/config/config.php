@@ -3,6 +3,7 @@
 return array(
 
     'id' => 'captcha',
+    'route' => '/captcha',
     'fontsizes' => array(14, 15, 16, 17, 18),
     'length' => 5,
     'width' => 120,
