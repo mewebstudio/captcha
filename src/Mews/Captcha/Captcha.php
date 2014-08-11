@@ -199,7 +199,9 @@ class Captcha {
      */
     public static function img() {
 
-		return URL::to('captcha?' . mt_rand(100000, 999999));
+        return URL::route('captcha', [
+            'rand' => mt_rand(100000, 999999)
+        ]);
 
     }
 

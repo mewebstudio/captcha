@@ -1,6 +1,8 @@
 <?php
 
-Route::get('/captcha', function()
-{
-	return Captcha::create();
-});
+Route::get(Config::get('captcha::config')['route'], [
+    'uses' => function () {
+            return Captcha::create();
+        },
+    'as' => 'captcha'
+]);
