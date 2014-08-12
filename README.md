@@ -23,6 +23,8 @@ project's `composer.json`.
 
 ###Updated Installation
 
+The improvements of mauris's fork over mewebstudio are listed on the [pull request](https://github.com/mewebstudio/captcha/pull/14).
+
 In order to use [mauris's](https://github.com/mauris/captcha) fork, the repository meeds to be added into the `composer.json` in the following manner:
 
 ```json
