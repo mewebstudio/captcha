@@ -183,7 +183,7 @@ class Captcha {
     public static function check($value)
     {
 
-		$captchaHash = Session::get('captchaHash');
+		$captchaHash = Session::pull('captchaHash');
 
         return $value != null && $captchaHash != null && Hash::check(static::$config['sensitive'] === true ? $value : Str::lower($value), $captchaHash);
 
