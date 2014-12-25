@@ -182,11 +182,12 @@ class Captcha {
      */
     public static function check($value)
     {
-
-		$captchaHash = Session::get('captchaHash');
+        $captchaHash = Session::get('captchaHash');
+        
+        //Clear captcha, so same request can't be re-used. 
+        Session::forget('captchaHash');
 
         return $value != null && $captchaHash != null && Hash::check(static::$config['sensitive'] === true ? $value : Str::lower($value), $captchaHash);
-
     }
 
     /**
