@@ -1,6 +1,11 @@
 <?php namespace Mews\Captcha;
 
-use Config, Str, Session, Hash, URL;
+use Config;
+use Session;
+use Hash;
+use URL;
+use Str;
+use Response;
 
 /**
  *
@@ -15,8 +20,8 @@ use Config, Str, Session, Hash, URL;
  *
  */
 
-class Captcha {
-
+class Captcha
+{
     /**
      * @var  Captcha  singleton instance of the Useragent object
      */
@@ -25,31 +30,34 @@ class Captcha {
     /**
      * @var  Captcha config instance of the Captcha::$config object
      */
-    public static $config = array();
+    protected $config = array();
 
-    private static $id;
-    private static $assets;
-    private static $fonts = array();
-    private static $backgrounds = array();
-    private static $char;
+    private $assets;
+    private $fonts = array();
+    private $backgrounds = array();
 
     public static function instance()
     {
+        if (!self::$singleton) {
+            $instance = new self();
+            $instance->config = Config::get('captcha::config');
+            $instance->assets = __DIR__ . '/../../../public/assets';
+            $instance->fonts = $instance->assets('fonts');
+            $instance->backgrounds = $instance->assets('backgrounds');
+            self::$singleton = $instance;
+        }
 
-    	if ( ! Captcha::$singleton)
-    	{
+        return self::$singleton;
+    }
 
-    		self::$config = Config::get('captcha::config');
-    		self::$assets = __DIR__ . '/../../../public/assets/';
-    		self::$fonts = self::assets('fonts');
-    		self::$backgrounds = self::assets('backgrounds');
-
-    		Captcha::$singleton = new Captcha();
-
-    	}
-
-    	return Captcha::$singleton;
-
+    protected static function generateString($length, $characters = '2346789abcdefghjmnpqrtuxyzABCDEFGHJMNPQRTUXYZ')
+    {
+        $charLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; ++$i) {
+            $randomString .= $characters[mt_rand(0, $charLength - 1)];
+        }
+        return $randomString;
     }
 
     /**
@@ -57,56 +65,78 @@ class Captcha {
      * It is used internally by this bundle when pointing to "/captcha" (see [vendor]\routes.php)
      * Typically, you won't use this function, but use the above img() function instead
      *
-     * @access	public
-     * @return	img
+     * @access  public
+     * @return  Response
      */
-    public static function create($id = null)
+    public function create($formId = null)
     {
+        switch($this->config['type'])
+        {
+            case 'num':
+                $code = static::generateString($this->config['length'], '1234567890');
+                break;
+            default:
+                $code = static::generateString($this->config['length']);
+                break;
+        }
 
-        static::$char = Str::random(static::$config['length']);
+        if (!$formId) {
+            $formId = hash('sha256', URL::previous());
+        }
+        Session::put('captchaHash.' . $formId, $this->hashMake($code));
 
-        Session::put('captchaHash', Hash::make(static::$config['sensitive'] === true ? static::$char : Str::lower(static::$char)));
-
-    	static::$id = $id ? $id : static::$config['id'];
-
-        $bg_image = static::asset('backgrounds');
+        $bg_image = $this->asset('backgrounds');
 
         $bg_image_info = getimagesize($bg_image);
-        if ($bg_image_info['mime'] == 'image/jpg' || $bg_image_info['mime'] == 'image/jpeg')
-        {
+        if ($bg_image_info['mime'] == 'image/jpg' || $bg_image_info['mime'] == 'image/jpeg') {
             $old_image = imagecreatefromjpeg($bg_image);
-        }
-        elseif ($bg_image_info['mime'] == 'image/gif')
-        {
+        } elseif ($bg_image_info['mime'] == 'image/gif') {
             $old_image = imagecreatefromgif($bg_image);
-        }
-        elseif ($bg_image_info['mime'] == 'image/png')
-        {
+        } elseif ($bg_image_info['mime'] == 'image/png') {
             $old_image = imagecreatefrompng($bg_image);
         }
 
-        $new_image = imagecreatetruecolor(static::$config['width'], static::$config['height']);
+        $new_image = imagecreatetruecolor($this->config['width'], $this->config['height']);
         $bg = imagecolorallocate($new_image, 255, 255, 255);
         imagefill($new_image, 0, 0, $bg);
 
-        imagecopyresampled($new_image, $old_image, 0, 0, 0, 0, static::$config['width'], static::$config['height'], $bg_image_info[0], $bg_image_info[1]);
+        imagecopyresampled($new_image, $old_image, 0, 0, 0, 0, $this->config['width'], $this->config['height'], $bg_image_info[0], $bg_image_info[1]);
 
         $bg = imagecolorallocate($new_image, 255, 255, 255);
-        for ($i = 0; $i < strlen(static::$char); $i++)
-        {
-            $color_cols = explode(',', static::asset('colors'));
+        $codeLength = $this->config['length'];
+        $spaces = (array)$this->config['space'];
+        $space = $spaces[array_rand($spaces)];
+        for ($i = 0; $i < $codeLength; ++$i) {
+            $color_cols = explode(',', $this->asset('colors'));
             $fg = imagecolorallocate($new_image, trim($color_cols[0]), trim($color_cols[1]), trim($color_cols[2]));
-            imagettftext($new_image, static::asset('fontsizes'), rand(-10, 15), 10 + ($i * static::$config['space']), rand(static::$config['height'] - 10, static::$config['height'] - 5), $fg, static::asset('fonts'), static::$char[$i]);
+            imagettftext($new_image, $this->asset('fontsizes'), mt_rand(-10, 15), 10 + ($i * $space), mt_rand($this->config['height'] - 10, $this->config['height'] - 5), $fg, $this->asset('fonts'), $code[$i]);
         }
         imagealphablending($new_image, false);
 
-        header('Cache-Control: no-cache, no-store, max-age=0, must-revalidate');
-        header('Pragma: no-cache');
-        header("Content-type: image/jpg");
-        header('Content-Disposition: inline; filename=' . static::$id . '.jpg');
-        imagejpeg($new_image, null, static::$config['quality']);
+        ob_start();
+        imagejpeg($new_image, null, $this->config['quality']);
+        $content = ob_get_clean();
         imagedestroy($new_image);
 
+        return Response::make($content, 200)
+            ->header('cache-control', 'no-cache, no-store, max-age=0, must-revalidate')
+            ->header('pragma', 'no-cache')
+            ->header('content-type', 'image/jpeg')
+            ->header('content-disposition', 'inline; filename=captcha.jpg');
+    }
+
+    protected function hashMake($code)
+    {
+        $code = $this->config['sensitive'] ? $code : Str::lower($code);
+        $key = Config::get('app.key');
+        return Hash::make($code . $key);
+    }
+
+    protected function hashCheck($code, $hash)
+    {
+        $code = $this->config['sensitive'] ? $code : Str::lower($code);
+        $key = Config::get('app.key');
+        return Hash::check($code . $key, $hash);
     }
 
     /**
@@ -116,28 +146,24 @@ class Captcha {
      * @param   string
      * @return  array
      */
-    public static function assets($type = null) {
+    public function assets($type = null)
+    {
 
-    	$files = array();
+        $files = array();
 
-    	if ($type == 'fonts')
-    	{
-    		$ext = 'ttf';
-    	}
-    	elseif ($type == 'backgrounds')
-    	{
-    		$ext = 'png';
-    	}
+        if ($type == 'fonts') {
+            $ext = 'ttf';
+        } elseif ($type == 'backgrounds') {
+            $ext = 'png';
+        }
 
-    	if ($type)
-    	{
-			foreach (glob(static::$assets . $type . '/*.' . $ext) as $filename)
-			{
-			    $files[] = $filename;
-			}
-		}
+        if ($type) {
+            foreach (glob($this->assets . '/' . $type . '/*.' . $ext) as $filename) {
+                $files[] = $filename;
+            }
+        }
 
-		return $files;
+        return $files;
 
     }
 
@@ -148,45 +174,48 @@ class Captcha {
      * @param   string
      * @return  string
      */
-    public static function asset($type = null)
+    public function asset($type = null)
     {
+        $file = null;
 
-    	$file = null;
-
-    	if ($type == 'fonts')
-    	{
-    		$file = static::$fonts[rand(0, count(static::$fonts) - 1)];
-    	}
-    	if ($type == 'backgrounds')
-    	{
-    		$file = static::$backgrounds[rand(0, count(static::$backgrounds) - 1)];
-    	}
-    	if ($type == 'fontsizes')
-    	{
-    		$file = static::$config['fontsizes'][rand(0, count(static::$config['fontsizes']) - 1)];
-    	}
-    	if ($type == 'colors')
-    	{
-    		$file = static::$config['colors'][rand(0, count(static::$config['colors']) - 1)];
-    	}
+        if ($type == 'fonts') {
+            $file = $this->fonts[array_rand($this->fonts)];
+        }
+        if ($type == 'backgrounds') {
+            $file = $this->backgrounds[array_rand($this->backgrounds)];
+        }
+        if ($type == 'fontsizes') {
+            $file = $this->config['fontsizes'][array_rand($this->config['fontsizes'])];
+        }
+        if ($type == 'colors') {
+            $file = $this->config['colors'][array_rand($this->config['colors'])];
+        }
         return $file;
-
     }
 
     /**
      * Checks if the supplied captcha test value matches the stored one
-     * 
-     * @param	string	$value
-     * @access	public
-     * @return	bool
+     *
+     * @param   string  $value
+     * @param   string  $formId
+     * @access  public
+     * @return  bool
      */
-    public static function check($value)
+    public function check($value, $formId = null)
     {
+        if (!$formId) {
+            $formId = hash('sha256', URL::previous());
+        }
+        $captchaHash = Session::get('captchaHash.' . $formId);
 
-		$captchaHash = Session::get('captchaHash');
+        $result = $value != null
+            && $captchaHash != null
+            && strlen($value) === $this->config['length'] // must be of the same length right?
+            && $this->hashCheck($value, $captchaHash);
 
-        return $value != null && $captchaHash != null && Hash::check(static::$config['sensitive'] === true ? $value : Str::lower($value), $captchaHash);
-
+        // forget the hash to prevent replay
+        Session::forget('captchaHash');
+        return $result;
     }
 
     /**
@@ -194,13 +223,11 @@ class Captcha {
      * For example, you can use in your view something like
      * <img src="<?php echo Captcha::img(); ?>" alt="" />
      *
-     * @access	public
-     * @return	string
+     * @access  public
+     * @return  string
      */
-    public static function img() {
-
-		return URL::to('captcha?' . mt_rand(100000, 999999));
-
+    public function img($formId = null)
+    {
+        return URL::to('captcha?' . ($formId ? 'id=' . $formId . '&' : '') . mt_rand(100000, 999999));
     }
-
 }

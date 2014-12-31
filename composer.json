@@ -8,6 +8,10 @@
         {
             "name": "Muharrem ERIN",
             "email": "me@mewebstudio.com"
+        },
+        {
+            "name": "Sam Yong",
+            "email": "sam@mauris.sg"
         }
     ],
     "require": {
@@ -16,9 +20,8 @@
 
     },
     "autoload": {
-        "psr-0": {
-            "Mews\\Captcha": "src/"
+        "psr-4": {
+            "Mews\\Captcha\\": "src/Mews/Captcha"
         }
-    },
-    "minimum-stability": "dev"
+    }
 }

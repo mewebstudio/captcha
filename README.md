@@ -14,10 +14,31 @@ project's `composer.json`.
 ```json
 {
     "require": {
-        "laravel/framework": "4.0.*",
+        "laravel/framework": "4.1.*",
         "mews/captcha": "dev-master"
     },
     "minimum-stability": "dev"
+}
+```
+
+###Updated Installation
+
+The improvements of mauris's fork over mewebstudio are listed on the [pull request](https://github.com/mewebstudio/captcha/pull/14).
+
+In order to use [mauris's](https://github.com/mauris/captcha) fork, the repository meeds to be added into the `composer.json` in the following manner:
+
+```json
+{
+    "require": {
+        "laravel/framework": "4.1.*",
+        "mews/captcha": "1.0.*"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/mauris/captcha"
+        }
+    ]
 }
 ```
 
