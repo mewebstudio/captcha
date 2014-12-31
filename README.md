@@ -44,6 +44,8 @@ In order to use [mauris's](https://github.com/mauris/captcha) fork, the reposito
 
 Update your packages with ```composer update``` or install with ```composer install```.
 
+In Windows, you'll need to include the GD2 DLL `php_gd2.dll` as an extension in php.ini.
+
 ## Usage
 
 To use the Captcha Service Provider, you must register the provider when bootstrapping your Laravel application. There are
