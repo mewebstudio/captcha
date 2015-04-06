@@ -132,8 +132,9 @@ Captcha::img()
 # To use different configurations
 ```php
 captcha_img('flat)
-// ...
+
 Captcha::img('inverse')
+
 // ...etc...
 ```
 
