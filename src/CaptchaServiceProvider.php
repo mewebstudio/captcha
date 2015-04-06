@@ -74,6 +74,7 @@ class CaptchaServiceProvider extends ServiceProvider {
         $this->app['validator'] = $this->app->share(function($app) {
             $validator = new Factory($app['translator']);
             $validator->resolver(function($translator, $data, $rules, $messages) {
+                $messages['captcha'] = 'It seems that you have entered an invalid :attribute code. Enter the code that you see in the image below.';
                 return new CaptchaValidator($translator, $data, $rules, $messages);
             });
             return $validator;
