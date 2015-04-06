@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Mews\Purifier
+ * @see \Mews\Captcha
  */
 class Captcha extends Facade {
 
