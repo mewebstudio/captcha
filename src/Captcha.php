@@ -18,8 +18,8 @@ use Illuminate\Config\Repository;
 use Illuminate\Hashing\BcryptHasher as Hasher;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
-use Intervention\Image\ImageManager;
 use Illuminate\Session\Store as Session;
+use Intervention\Image\ImageManager;
 
 class Captcha
 {
