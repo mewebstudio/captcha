@@ -1,9 +1,11 @@
-# Captcha for Laravel 4
+# Captcha for Laravel 5
 
-A simple [Laravel 4](http://four.laravel.com/) service provider for including the [Captcha for Laravel 4](https://github.com/mewebstudio/captcha).
+A simple [Laravel 5](http://www.laravel.com/) service provider for including the [Captcha for Laravel 5](https://github.com/mewebstudio/captcha).
+
+for Laravel 4 [Captcha for Laravel Laravel 4](https://github.com/mewebstudio/captcha/tree/master-l4)
 
 ## Preview
-![Preview](http://i.imgur.com/kfXYhlk.jpg?1)
+![Preview](http://i.imgur.com/HYtr744.png)
 
 ## Installation
 
@@ -14,31 +16,10 @@ project's `composer.json`.
 ```json
 {
     "require": {
-        "laravel/framework": "4.1.*",
+        "laravel/framework": "5.0.*",
         "mews/captcha": "dev-master"
     },
     "minimum-stability": "dev"
-}
-```
-
-###Updated Installation
-
-The improvements of mauris's fork over mewebstudio are listed on the [pull request](https://github.com/mewebstudio/captcha/pull/14).
-
-In order to use [mauris's](https://github.com/mauris/captcha) fork, the repository meeds to be added into the `composer.json` in the following manner:
-
-```json
-{
-    "require": {
-        "laravel/framework": "4.1.*",
-        "mews/captcha": "1.0.*"
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/mauris/captcha"
-        }
-    ]
 }
 ```
 
@@ -51,42 +32,54 @@ In Windows, you'll need to include the GD2 DLL `php_gd2.dll` as an extension in 
 To use the Captcha Service Provider, you must register the provider when bootstrapping your Laravel application. There are
 essentially two ways to do this.
 
-Find the `providers` key in `app/config/app.php` and register the Captcha Service Provider.
+Find the `providers` key in `config/app.php` and register the Captcha Service Provider.
 
 ```php
-    'providers' => array(
+    'providers' => [
         // ...
         'Mews\Captcha\CaptchaServiceProvider',
-    )
+    ]
 ```
 
-Find the `aliases` key in `app/config/app.php`.
+Find the `aliases` key in `config/app.php`.
 
 ```php
-    'aliases' => array(
+    'aliases' => [
         // ...
         'Captcha' => 'Mews\Captcha\Facades\Captcha',
-    )
+    ]
 ```
 
 ## Configuration
 
 To use your own settings, publish config.
 
-```$ php artisan config:publish mews/captcha```
+```$ php artisan vendor:publish```
 
-## Example Usage
+`config/captcha.php`
 
 ```php
+return [
+    'default'   => [
+        'length'    => 5,
+        'width'     => 120,
+        'height'    => 36,
+        'quality'   => 90,
+    ],
+    // ...
+];
+```
 
-    // [your site path]/app/routes.php
+## Example Usage
+```php
 
-    Route::any('/captcha-test', function()
+    // [your site path]/Http/routes.php
+
+    Route::any('captcha-test', function()
     {
-
         if (Request::getMethod() == 'POST')
         {
-            $rules =  array('captcha' => array('required', 'captcha'));
+            $rules = ['captcha' => 'required|captcha'];
             $validator = Validator::make(Input::all(), $rules);
             if ($validator->fails())
             {
@@ -97,24 +90,62 @@ To use your own settings, publish config.
                 echo '<p style="color: #00ff30;">Matched :)</p>';
             }
         }
-
-        $content = Form::open(array(URL::to(Request::segment(1))));
-        $content .= '<p>' . HTML::image(Captcha::img(), 'Captcha image') . '</p>';
-        $content .= '<p>' . Form::text('captcha') . '</p>';
-        $content .= '<p>' . Form::submit('Check') . '</p>';
-        $content .= '<p>' . Form::close() . '</p>';
-        return $content;
-
+    
+        $form = '<form method="post" action="captcha-test">';
+        $form .= '<input type="hidden" name="_token" value="' . csrf_token() . '">';
+        $form .= '<p>' . captcha_img() . '</p>';
+        $form .= '<p><input type="text" name="captcha"></p>';
+        $form .= '<p><button type="submit" name="check">Check</button></p>';
+        $form .= '</form>';
+        return $form;
     });
 ```
+
+# Return Image
+```php
+captcha()
+```
+or
+```php
+Captcha::create()
+```
+
+
+# Return URL
+```php
+captcha_src()
+```
+or
+```
+Captcha::src()
+```
+
+# Return HTML
+```php
+captcha_img()
+```
+or
+```php
+Captcha::img()
+```
+
+# To use different configurations
+```php
+captcha_img('flat)
+// ...
+Captcha::img('inverse')
+// ...etc...
+```
+
+Based on [Intervention Image](https://github.com/Intervention/image)
 
 ^_^
 
 ## Links
-
+* [Intervention Image](https://github.com/Intervention/image)
 * [L4 Captcha on Github](https://github.com/mewebstudio/captcha)
 * [L4 Captcha on Packagist](https://packagist.org/packages/mews/captcha)
-* [For L3 on Github](https://github.com/mewebstudio/mecaptcha)
+* [For L4 on Github](https://github.com/mewebstudio/captcha/tree/master-l4)
 * [License](http://www.opensource.org/licenses/mit-license.php)
 * [Laravel website](http://laravel.com)
 * [Laravel Turkiye website](http://www.laravel.gen.tr)

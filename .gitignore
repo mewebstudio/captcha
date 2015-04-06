@@ -1,7 +1,3 @@
-*~
-*.bak
-Thumbs.db
-desktop.ini
-vendor
-*.phar
-phpunit.xml
+/bootstrap/compiled.php
+.env.*.php
+.env.php

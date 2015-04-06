@@ -1,15 +1,13 @@
-language: "php"
+language: php
 
 php:
-  - "5.3"
-  - "5.4"
-  - "5.5"
+  - 5.4
+  - 5.5
+  - 5.6
+  - hhvm
 
 before_script:
-  - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-  - "curl -s http://getcomposer.org/installer | php && php composer.phar install --prefer-source --no-interaction --dev"
-  - "pyrus install pear/PHP_CodeSniffer && phpenv rehash"
+  - travis_retry composer self-update
+  - travis_retry composer install --prefer-source --no-interaction --dev
 
-script:
-    - "phpunit -c test"
-    - "phpcs --encoding=utf-8 --extensions=php --standard=test/phpcs.xml -nsp ./"
+script: phpunit
