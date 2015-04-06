@@ -7,10 +7,10 @@ php:
   - hhvm
 
 before_install:
-  - php /home/travis/.phpenv/versions/5.4/bin/composer self-update
+  - php /home/travis/.phpenv/versions/5.3.26/bin/composer.phar self-update
 
 before_script:
-  - php /home/travis/.phpenv/versions/5.3.26/bin/composer.phar self-update
+  - travis_retry composer self-update
   - travis_retry composer install --prefer-source --no-interaction --dev
 
-script: phpunit
+script: phpunit --configuration phpunit.xml
