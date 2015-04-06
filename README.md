@@ -10,7 +10,7 @@ for Laravel 4 [Captcha for Laravel Laravel 4](https://github.com/mewebstudio/cap
 ## Installation
 
 The Captcha Service Provider can be installed via [Composer](http://getcomposer.org) by requiring the
-`mews/captcha` package and setting the `minimum-stability` to `dev` (required for Laravel 4) in your
+`mews/captcha` package and setting the `minimum-stability` to `dev` (required for Laravel 5) in your
 project's `composer.json`.
 
 ```json
