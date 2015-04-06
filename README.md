@@ -134,9 +134,8 @@ Captcha::img()
 captcha_img('flat)
 
 Captcha::img('inverse')
-
-// ...etc...
 ```
+etc.
 
 Based on [Intervention Image](https://github.com/Intervention/image)
 
