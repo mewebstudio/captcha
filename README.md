@@ -15,7 +15,7 @@ project's `composer.json`.
 {
     "require": {
         "laravel/framework": "4.1.*",
-        "mews/captcha": "dev-master"
+        "mews/captcha": "dev-master-l4"
     },
     "minimum-stability": "dev"
 }
