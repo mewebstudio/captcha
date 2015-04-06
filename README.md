@@ -103,37 +103,37 @@ return [
 
 # Return Image
 ```php
-captcha()
+captcha();
 ```
 or
 ```php
-Captcha::create()
+Captcha::create();
 ```
 
 
 # Return URL
 ```php
-captcha_src()
+captcha_src();
 ```
 or
 ```
-Captcha::src()
+Captcha::src();
 ```
 
 # Return HTML
 ```php
-captcha_img()
+captcha_img();
 ```
 or
 ```php
-Captcha::img()
+Captcha::img();
 ```
 
 # To use different configurations
 ```php
-captcha_img('flat)
+captcha_img('flat);
 
-Captcha::img('inverse')
+Captcha::img('inverse');
 ```
 etc.
 
