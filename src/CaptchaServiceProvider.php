@@ -73,6 +73,7 @@ class CaptchaServiceProvider extends ServiceProvider {
 
         $this->app['validator'] = $this->app->share(function($app) {
             $validator = new Factory($app['translator']);
+            $validator->setPresenceVerifier($this->app['validation.presence']);
             $validator->resolver(function($translator, $data, $rules, $messages) {
                 return new CaptchaValidator($translator, $data, $rules, $messages);
             });
