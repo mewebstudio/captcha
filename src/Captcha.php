@@ -18,8 +18,8 @@ use Illuminate\Config\Repository;
 use Illuminate\Hashing\BcryptHasher as Hasher;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Str;
-use Illuminate\Session\Store as Session;
 use Intervention\Image\ImageManager;
+use Illuminate\Session\Store as Session;
 
 class Captcha
 {
@@ -366,9 +366,9 @@ class Captcha
                 rand(0, $this->image->width()),
                 rand(0, $this->image->height()),
                 function ($draw) {
-                    $draw->color($this->fontColor()
-                );
-            });
+                    $draw->color($this->fontColor());
+                }
+            );
         }
         return $this->image;
     }
