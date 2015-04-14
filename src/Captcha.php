@@ -55,12 +55,12 @@ class Captcha
     protected $str;
 
     /**
-     * @var ImageManager->canvas
+     * @var ImageManager|canvas
      */
     protected $canvas;
 
     /**
-     * @var ImageManager->image
+     * @var ImageManager|image
      */
     protected $image;
 
@@ -333,7 +333,7 @@ class Captcha
      */
     protected function fontColor()
     {
-        if ($this->fontColors)
+        if ( ! empty($this->fontColors))
         {
             $color = $this->fontColors[rand(0, count($this->fontColors) - 1)];
         }
