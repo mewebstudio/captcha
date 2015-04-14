@@ -55,12 +55,12 @@ class Captcha
     protected $str;
 
     /**
-     * @var ImageManager|canvas
+     * @var ImageManager
      */
     protected $canvas;
 
     /**
-     * @var ImageManager|image
+     * @var ImageManager
      */
     protected $image;
 
