@@ -186,7 +186,7 @@ class Captcha
     }
 
     /**
-     * @param $config
+     * @param string $config
      * @return void
      */
     protected function configure($config)
@@ -354,7 +354,7 @@ class Captcha
     }
 
     /**
-     * @return object
+     * @return \Intervention\Image\Image
      */
     protected function lines()
     {
