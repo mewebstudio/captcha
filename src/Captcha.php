@@ -191,7 +191,7 @@ class Captcha
      */
     protected function configure($config)
     {
-        if($this->config->has('captcha.' . $config))
+        if ($this->config->has('captcha.' . $config))
         {
             foreach($this->config->get('captcha.' . $config) as $key => $val)
             {
@@ -219,7 +219,7 @@ class Captcha
             $this->bgColor
         );
 
-        if($this->bgImage)
+        if ($this->bgImage)
         {
             $this->image = $this->imageManager->make($this->background())->resize(
                 $this->width,
@@ -232,7 +232,7 @@ class Captcha
             $this->image = $this->canvas;
         }
 
-        if($this->contrast != 0)
+        if ($this->contrast != 0)
         {
             $this->image->contrast($this->contrast);
         }
@@ -241,15 +241,15 @@ class Captcha
 
         $this->lines();
 
-        if($this->sharpen)
+        if ($this->sharpen)
         {
             $this->image->sharpen($this->sharpen);
         }
-        if($this->invert)
+        if ($this->invert)
         {
             $this->image->invert($this->invert);
         }
-        if($this->blur)
+        if ($this->blur)
         {
             $this->image->blur($this->blur);
         }
@@ -277,7 +277,7 @@ class Captcha
             $bag .= $characters[rand(0, count($characters) - 1)];
         }
 
-        if( ! $this->sensitive)
+        if ( ! $this->sensitive)
         {
             $bag = $this->str->lower($bag);
         }
@@ -333,7 +333,7 @@ class Captcha
      */
     protected function fontColor()
     {
-        if($this->fontColors)
+        if ($this->fontColors)
         {
             $color = $this->fontColors[rand(0, count($this->fontColors) - 1)];
         }
@@ -380,7 +380,7 @@ class Captcha
     public function check($value)
     {
         $store = $this->session->get('captcha');
-        if($this->sensitive)
+        if ($this->sensitive)
         {
             $value = $this->str->lower($value);
             $store = $this->str->lower($store);
