@@ -1,28 +1,32 @@
 <?php namespace Mews\Captcha;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Validation\Factory;
 
 class CaptchaServiceProvider extends ServiceProvider {
 
     /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
-     */
-    protected $defer = false;
-
-    /**
-     *
      * Boot the service provider.
      *
      * @return null
      */
     public function boot()
     {
+        // Publish configuration files
         $this->publishes([
-           __DIR__.'/../config/captcha.php' => config_path('captcha.php')
-        ]);
+            __DIR__.'/../config/captcha.php' => config_path('captcha.php')
+        ], 'config');
+
+        // HTTP routing
+        $this->app['router']->get('captcha/{config?}', function(Captcha $captcha, $config = 'default')
+        {
+            return $captcha->create($config);
+        });
+
+        // Validator extensions
+        $this->app['validator']->extend('captcha', function($attribute, $value, $parameters)
+        {
+            return captcha_check($value);
+        });
     }
 
     /**
@@ -32,14 +36,12 @@ class CaptchaServiceProvider extends ServiceProvider {
      */
     public function register()
     {
+        // Merge configs
         $this->mergeConfigFrom(
-            __DIR__.'/../config/captcha.php', 'mews.captcha'
+            __DIR__.'/../config/captcha.php', 'captcha'
         );
 
-        /**
-         * @param $app
-         * @return Captcha
-         */
+        // Bind captcha
         $this->app->bind('captcha', function($app)
         {
             return new Captcha(
@@ -51,44 +53,6 @@ class CaptchaServiceProvider extends ServiceProvider {
                 $app['Illuminate\Support\Str']
             );
         });
-
-        /**
-         * @param Captcha $captcha
-         * @return \Intervention\Image\ImageManager
-         */
-        $this->app['router']->get('captcha', function(Captcha $captcha)
-        {
-            return $captcha->create();
-        });
-
-        /**
-         * @param Captcha $captcha
-         * @param $config
-         * @return \Intervention\Image\ImageManager
-         */
-        $this->app['router']->get('captcha/{config}', function(Captcha $captcha, $config)
-        {
-            return $captcha->create($config);
-        });
-
-        $this->app['validator'] = $this->app->share(function($app) {
-            $validator = new Factory($app['translator']);
-            $validator->setPresenceVerifier($this->app['validation.presence']);
-            $validator->resolver(function($translator, $data, $rules, $messages) {
-                return new CaptchaValidator($translator, $data, $rules, $messages);
-            });
-            return $validator;
-        });
-    }
-
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
-    public function provides()
-    {
-        return ['captcha'];
     }
 
 }
