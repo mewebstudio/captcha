@@ -174,15 +174,6 @@ class Captcha
         $this->session = $session;
         $this->hasher = $hasher;
         $this->str = $str;
-
-        if ( ! $this->config->has('captcha'))
-        {
-            if ( ! $this->config->has('mews.captcha'))
-            {
-                throw new Exception('Configuration parameters not loaded!');
-            }
-            $this->config->set('captcha', $this->config->get('mews.captcha'));
-        }
     }
 
     /**
