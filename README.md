@@ -19,10 +19,17 @@ project's `composer.json`.
 {
     "require": {
         "laravel/framework": "5.0.*",
-        "mews/captcha": "dev-master"
+        "mews/captcha": "~2.0"
     },
     "minimum-stability": "dev"
 }
+```
+
+or
+
+Require this package with composer:
+```
+composer require mews/captcha
 ```
 
 Update your packages with ```composer update``` or install with ```composer install```.
