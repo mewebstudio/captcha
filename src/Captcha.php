@@ -386,7 +386,7 @@ class Captcha
      */
     public function src($config = null)
     {
-        return url('captcha' . ($config ? '/' . $config : null)) . '?' . $this->str->random(8);
+        return url('captcha' . ($config ? '/' . $config : '/default')) . '?' . $this->str->random(8);
     }
 
     /**
