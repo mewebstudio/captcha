@@ -1,16 +1,17 @@
-<?php namespace Mews\Captcha;
+<?php
+
+namespace Mews\Captcha;
 
 /**
- *
  * Laravel 5 Captcha package
+ *
  * @copyright Copyright (c) 2015 MeWebStudio
- * @version 2.0.0
+ * @version 2.x
  * @author Muharrem ERİN
  * @contact me@mewebstudio.com
  * @web http://www.mewebstudio.com
  * @date 2015-04-03
  * @license http://www.opensource.org/licenses/mit-license.php The MIT License
- *
  */
 
 use Exception;
@@ -21,6 +22,10 @@ use Illuminate\Support\Str;
 use Intervention\Image\ImageManager;
 use Illuminate\Session\Store as Session;
 
+/**
+ * Class Captcha
+ * @package Mews\Captcha
+ */
 class Captcha
 {
 
@@ -166,7 +171,14 @@ class Captcha
      * @throws Exception
      * @internal param Validator $validator
      */
-    public function __construct(Filesystem $files, Repository $config, ImageManager $imageManager, Session $session, Hasher $hasher, Str $str)
+    public function __construct(
+        Filesystem $files,
+        Repository $config,
+        ImageManager $imageManager,
+        Session $session,
+        Hasher $hasher,
+        Str $str
+    )
     {
         $this->files = $files;
         $this->config = $config;
@@ -192,6 +204,8 @@ class Captcha
     }
 
     /**
+     * Create captcha image
+     *
      * @param string $config
      * @return ImageManager->response
      */
@@ -250,6 +264,8 @@ class Captcha
     }
 
     /**
+     * Image backgrounds
+     *
      * @return string
      */
     protected function background()
@@ -258,29 +274,30 @@ class Captcha
     }
 
     /**
+     * Generate captcha text
+     *
      * @return string
      */
     protected function generate()
     {
         $characters = str_split($this->characters);
+
         $bag = '';
         for($i = 0; $i < $this->length; $i++)
         {
             $bag .= $characters[rand(0, count($characters) - 1)];
         }
 
-        if ( ! $this->sensitive)
-        {
-            $bag = $this->str->lower($bag);
-        }
-
-        $this->session->put('captcha', $this->hasher->make($bag));
+        $this->session->put('captcha', [
+            'sensitive' => $this->sensitive,
+            'key'       => $this->hasher->make($this->sensitive ? $bag : $this->str->lower($bag))
+        ]);
 
         return $bag;
     }
 
     /**
-     * Writing text
+     * Writing captcha text
      */
     protected function text()
     {
@@ -305,6 +322,8 @@ class Captcha
     }
 
     /**
+     * Image fonts
+     *
      * @return string
      */
     protected function font()
@@ -313,6 +332,8 @@ class Captcha
     }
 
     /**
+     * Random font size
+     *
      * @return integer
      */
     protected function fontSize()
@@ -321,6 +342,8 @@ class Captcha
     }
 
     /**
+     * Random font color
+     *
      * @return array
      */
     protected function fontColor()
@@ -338,6 +361,8 @@ class Captcha
     }
 
     /**
+     * Angle
+     *
      * @return int
      */
     protected function angle()
@@ -346,6 +371,8 @@ class Captcha
     }
 
     /**
+     * Random image lines
+     *
      * @return \Intervention\Image\Image
      */
     protected function lines()
@@ -366,21 +393,33 @@ class Captcha
     }
 
     /**
+     * Captcha check
+     *
      * @param $value
      * @return bool
      */
     public function check($value)
     {
-        $store = $this->session->get('captcha');
-        if ($this->sensitive)
+        if ( ! $this->session->has('captcha'))
+        {
+            return false;
+        }
+
+        $key = $this->session->get('captcha.key');
+
+        if ( ! $this->session->get('captcha.sensitive'))
         {
             $value = $this->str->lower($value);
-            $store = $this->str->lower($store);
         }
-        return $this->hasher->check($value, $store);
+
+        $this->session->remove('captcha');
+
+        return $this->hasher->check($value, $key);
     }
 
     /**
+     * Generate captcha image source
+     *
      * @param null $config
      * @return string
      */
@@ -390,6 +429,8 @@ class Captcha
     }
 
     /**
+     * Generate captcha image html tag
+     *
      * @param null $config
      * @return string
      */

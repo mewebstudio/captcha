@@ -4,6 +4,10 @@ namespace Mews\Captcha;
 
 use Illuminate\Routing\Controller;
 
+/**
+ * Class CaptchaController
+ * @package Mews\Captcha
+ */
 class CaptchaController extends Controller
 {
 
@@ -12,7 +16,7 @@ class CaptchaController extends Controller
      *
      * @param \Mews\Captcha\Captcha $captcha
      * @param string $config
-     * @return ImageManager->response
+     * @return \Intervention\Image\ImageManager->response
      */
     public function getCaptcha(Captcha $captcha, $config = 'default')
     {

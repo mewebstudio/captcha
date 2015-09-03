@@ -1,7 +1,13 @@
-<?php namespace Mews\Captcha;
+<?php
+
+namespace Mews\Captcha;
 
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Class CaptchaServiceProvider
+ * @package Mews\Captcha
+ */
 class CaptchaServiceProvider extends ServiceProvider {
 
     /**
