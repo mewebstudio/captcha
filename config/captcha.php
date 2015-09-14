@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'base_route' => '',
 
     'default'   => [
         'length'    => 5,
