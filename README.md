@@ -93,6 +93,10 @@ return [
 ];
 ```
 
+To use custom routes
+``` 'base_route' => 'your_route/' ```
+This will be concatenated to ```captcha/{config?}```
+
 ## Example Usage
 ```php
 
@@ -113,7 +117,7 @@ return [
                 echo '<p style="color: #00ff30;">Matched :)</p>';
             }
         }
-    
+
         $form = '<form method="post" action="captcha-test">';
         $form .= '<input type="hidden" name="_token" value="' . csrf_token() . '">';
         $form .= '<p>' . captcha_img() . '</p>';
