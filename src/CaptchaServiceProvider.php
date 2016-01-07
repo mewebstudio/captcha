@@ -22,6 +22,11 @@ class CaptchaServiceProvider extends ServiceProvider {
             __DIR__.'/../config/captcha.php' => config_path('captcha.php')
         ], 'config');
 
+        // HTTP routing
+        $this->app['router']->group(['middleware' => ['web']], function () {
+            $this->app['router']->get('captcha/{config?}', '\Mews\Captcha\CaptchaController@getCaptcha');
+        });
+
         // Validator extensions
         $this->app['validator']->extend('captcha', function($attribute, $value, $parameters)
         {
@@ -36,11 +41,6 @@ class CaptchaServiceProvider extends ServiceProvider {
      */
     public function register()
     {
-        // HTTP routing
-        $this->app['router']->group(['middleware' => ['web']], function () {
-            $this->app['router']->get('captcha/{config?}', '\Mews\Captcha\CaptchaController@getCaptcha');
-        });
-
         // Merge configs
         $this->mergeConfigFrom(
             __DIR__.'/../config/captcha.php', 'captcha'
