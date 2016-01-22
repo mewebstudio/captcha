@@ -73,6 +73,9 @@ for Laravel 5.1+
     ]
 ```
 
+for Laravel 5.2+
+Add `\Illuminate\Session\Middleware\StartSession::class` to `$middleware` in `Kernel.php`
+
 ## Configuration
 
 To use your own settings, publish config.
