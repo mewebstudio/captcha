@@ -42,5 +42,5 @@
 			"Mews\\Test\\": "tests/"
 		}
 	},
-	"minimum-stability": "dev-master"
+	"minimum-stability": "dev"
 }
