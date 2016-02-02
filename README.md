@@ -1,6 +1,6 @@
 # Captcha for Laravel 5
 
-[![Build Status](https://scrutinizer-ci.com/g/mewebstudio/captcha/badges/build.png?b=master)](https://scrutinizer-ci.com/g/mewebstudio/captcha/build-status/master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mewebstudio/captcha/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mewebstudio/captcha/?branch=master)
+[![Build Status](https://travis-ci.org/mewebstudio/captcha.svg?branch=master)](https://travis-ci.org/mewebstudio/captcha)
 
 A simple [Laravel 5](http://www.laravel.com/) service provider for including the [Captcha for Laravel 5](https://github.com/mewebstudio/captcha).
 
