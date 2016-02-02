@@ -23,7 +23,7 @@
 		"intervention/image": "~2.2"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "~4.0",
+		"phpunit/phpunit": "~4.1",
         "mockery/mockery": "0.9.*"
 	},
 	"autoload": {
@@ -36,7 +36,7 @@
 	},
 	"autoload-dev": {
 		"classmap": [
-			"tests/TestCase.php"
+			"tests"
 		],
 		"psr-4": {
 			"Mews\\Test\\": "tests/"

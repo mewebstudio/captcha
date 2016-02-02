@@ -1,9 +1,10 @@
-<?php namespace Mews\Tests\Captcha;
+<?php
 
-use TestCase;
+namespace Mews\Tests\Captcha;
+
 use Mockery;
 
-class CaptchaTest extends TestCase
+class CaptchaTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstructor()
     {
