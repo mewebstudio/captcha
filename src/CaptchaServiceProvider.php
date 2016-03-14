@@ -23,7 +23,11 @@ class CaptchaServiceProvider extends ServiceProvider {
         ], 'config');
 
         // HTTP routing
-        $this->app['router']->get('captcha/{config?}', '\Mews\Captcha\CaptchaController@getCaptcha');
+        if (strpos($this->app->version(), 'Lumen') !== false) {
+           $this->app->get('captcha[/{config}]', 'Mews\Captcha\LumenCaptchaController@getCaptcha');
+        } else {
+            $this->app['router']->get('captcha/{config?}', '\Mews\Captcha\CaptchaController@getCaptcha');
+        }
 
         // Validator extensions
         $this->app['validator']->extend('captcha', function($attribute, $value, $parameters)
