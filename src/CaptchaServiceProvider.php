@@ -24,8 +24,13 @@ class CaptchaServiceProvider extends ServiceProvider {
 
         // HTTP routing
         if (strpos($this->app->version(), 'Lumen') !== false) {
-           $this->app->get('captcha[/{config}]', 'Mews\Captcha\LumenCaptchaController@getCaptcha');
+            //Laravel Lumen
+            $this->app->get('captcha[/{config}]', 'Mews\Captcha\LumenCaptchaController@getCaptcha');
+        } else if (starts_with($this->app->version(), '5.2.') !== false) {
+            //Laravel 5.2.x
+            $this->app['router']->get('captcha/{config?}', '\Mews\Captcha\CaptchaController@getCaptcha')->middleware('web');
         } else {
+            //Laravel 5.0.x ~ 5.1.x
             $this->app['router']->get('captcha/{config?}', '\Mews\Captcha\CaptchaController@getCaptcha');
         }
 
