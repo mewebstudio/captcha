@@ -112,7 +112,7 @@ class Captcha
     /**
      * @var string
      */
-    protected $characters = '2346789abcdefghjmnpqrtuxyzABCDEFGHJMNPQRTUXYZ';
+    protected $characters;
 
     /**
      * @var string
@@ -186,6 +186,7 @@ class Captcha
         $this->session = $session;
         $this->hasher = $hasher;
         $this->str = $str;
+        $this->characters = config('captcha.characters','2346789abcdefghjmnpqrtuxyzABCDEFGHJMNPQRTUXYZ');
     }
 
     /**

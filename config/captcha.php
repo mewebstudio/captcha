@@ -2,6 +2,8 @@
 
 return [
 
+    'characters' => '2346789abcdefghjmnpqrtuxyzABCDEFGHJMNPQRTUXYZ',
+
     'default'   => [
         'length'    => 5,
         'width'     => 120,
