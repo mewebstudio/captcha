@@ -23,15 +23,14 @@ class CaptchaServiceProvider extends ServiceProvider {
         ], 'config');
 
         // HTTP routing
-        if (strpos($this->app->version(),'5.2.') == false) {
-            //Laravel 5.2.x
-            $this->app['router']->get('captcha/{config?}', '\Mews\Captcha\CaptchaController@getCaptcha')->middleware('web');
-        } else if (strpos($this->app->version(), 'Lumen') !== false) {
-             //Laravel Lumen
-            $this->app['router']->get('captcha[/{config?}]', '\Mews\Captcha\LumenCaptchaController@getCaptcha');
+        if (strpos($this->app->version(), 'Lumen') !== false) {
+           $this->app->get('captcha[/{config}]', 'Mews\Captcha\LumenCaptchaController@getCaptcha');
         } else {
-            //Laravel 5.0.x ~ 5.1.x
-            $this->app['router']->get('captcha/{config?}', '\Mews\Captcha\CaptchaController@getCaptcha');
+            if ((double) $this->app->version() >= 5.2) {
+                $this->app['router']->get('captcha/{config?}', '\Mews\Captcha\CaptchaController@getCaptcha')->middleware('web');
+            } else {
+                $this->app['router']->get('captcha/{config?}', '\Mews\Captcha\CaptchaController@getCaptcha');
+            }
         }
 
         // Validator extensions
