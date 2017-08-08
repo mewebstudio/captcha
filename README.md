@@ -34,7 +34,10 @@ composer require mews/captcha
 
 Update your packages with ```composer update``` or install with ```composer install```.
 
-In Windows, you'll need to include the GD2 DLL `php_gd2.dll` as an extension in php.ini.
+In Windows, you'll need to include the GD2 DLL `php_gd2.dll` in php.ini. And you also need include `php_fileinfo.dll` and `php_mbstring.dll` to fit the requirements of `mews/captcha`'s dependencies.
+
+
+
 
 ## Usage
 
