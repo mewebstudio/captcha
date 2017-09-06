@@ -3,10 +3,11 @@
 if ( ! function_exists('captcha')) {
 
     /**
+     * @param null   $text
      * @param string $config
      * @return mixed
      */
-    function captcha($config = 'default')
+    function captcha($text = null, $config = 'default')
     {
         return app('captcha')->create($config);
     }
