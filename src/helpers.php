@@ -9,7 +9,7 @@ if ( ! function_exists('captcha')) {
      */
     function captcha($text = null, $config = 'default')
     {
-        return app('captcha')->create($config);
+        return app('captcha')->create($text, $config);
     }
 }
 
