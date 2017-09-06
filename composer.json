@@ -42,5 +42,15 @@
 			"Mews\\Test\\": "tests/"
 		}
 	},
-	"minimum-stability": "dev"
+	"minimum-stability": "dev",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Mews\\Captcha\\CaptchaServiceProvider"
+			],
+			"aliases": {
+				"Captcha": "Mews\\Captcha\\Facades\\Captcha"
+			}
+		}
+	}
 }
