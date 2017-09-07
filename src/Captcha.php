@@ -214,6 +214,13 @@ class Captcha
     {
         $this->backgrounds = $this->files->files(__DIR__ . '/../assets/backgrounds');
         $this->fonts = $this->files->files(__DIR__ . '/../assets/fonts');
+        
+        if (app()->version() >= 5.5){
+            $this->fonts = array_map(function($file) {
+                return $file->getPathName();
+            }, $this->fonts);
+        }
+        
         $this->fonts = array_values($this->fonts); //reset fonts array index
 
         $this->configure($config);
