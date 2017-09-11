@@ -15,6 +15,7 @@ namespace Mews\Captcha;
  */
 
 use Exception;
+use SplFileInfo;
 use Illuminate\Config\Repository;
 use Illuminate\Hashing\BcryptHasher as Hasher;
 use Illuminate\Filesystem\Filesystem;
@@ -336,7 +337,10 @@ class Captcha
      */
     protected function font()
     {
-        return $this->fonts[rand(0, count($this->fonts) - 1)];
+        //  Randomly returns a SplFileInfo.
+        $font = $this->fonts[rand(0, count($this->fonts) - 1)];
+
+        return $font instanceof SplFileInfo ? $font->getPathname() : $font;
     }
 
     /**
