@@ -207,25 +207,26 @@ class Captcha
     /**
      * Create captcha image
      *
+     * @param null   $text
      * @param string $config
      * @return ImageManager->response
      */
-    public function create($config = 'default')
+    public function create($text = null, $config = 'default')
     {
         $this->backgrounds = $this->files->files(__DIR__ . '/../assets/backgrounds');
         $this->fonts = $this->files->files(__DIR__ . '/../assets/fonts');
-        
+
         if (app()->version() >= 5.5){
             $this->fonts = array_map(function($file) {
                 return $file->getPathName();
             }, $this->fonts);
         }
-        
+
         $this->fonts = array_values($this->fonts); //reset fonts array index
 
         $this->configure($config);
 
-        $this->text = $this->generate();
+        $this->text = $text ?: $this->generate();
 
         $this->canvas = $this->imageManager->canvas(
             $this->width,
