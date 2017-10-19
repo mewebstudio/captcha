@@ -160,6 +160,11 @@ class Captcha
     protected $sensitive = false;
 
     /**
+     * @var bool
+     */
+    protected $math = false;
+
+    /**
      * Constructor
      *
      * @param Filesystem $files
@@ -291,14 +296,24 @@ class Captcha
         $characters = str_split($this->characters);
 
         $bag = '';
-        for($i = 0; $i < $this->length; $i++)
-        {
-            $bag .= $characters[rand(0, count($characters) - 1)];
+        $key = '';
+
+        if ($this->math) {
+            $x = random_int(10, 30);
+            $y = random_int(1, 9);
+            $bag = "$x + $y = ";
+            $key = $x + $y;
+            $key .= '';
+        } else {
+            for ($i = 0; $i < $this->length; $i++) {
+                $bag .= $characters[rand(0, count($characters) - 1)];
+            }
+            $key = $this->sensitive ? $bag : $this->str->lower($bag);
         }
 
         $this->session->put('captcha', [
             'sensitive' => $this->sensitive,
-            'key'       => $this->hasher->make($this->sensitive ? $bag : $this->str->lower($bag))
+            'key'       => $this->hasher->make($key)
         ]);
 
         return $bag;
