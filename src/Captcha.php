@@ -444,7 +444,7 @@ class Captcha
      * and the value is the attribute value
      * @return string
      */
-    public function img($config = null, $attrs = ['alt' => 'captcha'])
+    public function img($config = null, $attrs = [])
     {
         $attrs_str = '';
         foreach($attrs as $attr => $value){
