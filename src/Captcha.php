@@ -454,7 +454,7 @@ class Captcha
             }
             $attrs_str .= $key.'="'.$value.'" ';
         }
-        return '<img src="' . $this->src($config) . '" trim($attrs_str)>';
+        return '<img src="' . $this->src($config) . '" '. trim($attrs_str).'>';
     }
 
 }
