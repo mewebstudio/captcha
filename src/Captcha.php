@@ -440,11 +440,21 @@ class Captcha
      * Generate captcha image html tag
      *
      * @param null $config
+     * @param array $attrs HTML attributes supplied to the image tag where key is the attribute
+     * and the value is the attribute value
      * @return string
      */
-    public function img($config = null)
+    public function img($config = null, $attrs = ['alt' => __('captcha')])
     {
-        return '<img src="' . $this->src($config) . '" alt="captcha">';
+        $attrs_str = '';
+        foreach($attrs as $attr => $value){
+            if ($key == 'src'){
+                //Neglect src attribute
+                continue;
+            }
+            $attrs_str .= $key.'="'.$value.'" ';
+        }
+        return '<img src="' . $this->src($config) . '" trim($attrs_str)>';
     }
 
 }
