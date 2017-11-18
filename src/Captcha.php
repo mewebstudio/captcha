@@ -448,11 +448,11 @@ class Captcha
     {
         $attrs_str = '';
         foreach($attrs as $attr => $value){
-            if ($key == 'src'){
+            if ($attr == 'src'){
                 //Neglect src attribute
                 continue;
             }
-            $attrs_str .= $key.'="'.$value.'" ';
+            $attrs_str .= $attr.'="'.$value.'" ';
         }
         return '<img src="' . $this->src($config) . '" '. trim($attrs_str).'>';
     }
