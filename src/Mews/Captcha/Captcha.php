@@ -113,10 +113,9 @@ class Captcha
 
         $codeLength = strlen($code);
         $spaces = (array)$this->config['space'];
+        $space = $spaces[array_rand($spaces)];
 
         for ($i = 0; $i < $codeLength; $i++) {
-            $space = $spaces[array_rand($spaces)];
-
             $color_cols = explode(',', $this->asset('colors'));
             $fg = imagecolorallocate($new_image, trim($color_cols[0]), trim($color_cols[1]), trim($color_cols[2]));
 

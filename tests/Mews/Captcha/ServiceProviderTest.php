@@ -48,9 +48,9 @@ class ServiceProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = $this->getMock('Illuminate\Container\Container', array('make'));
 
-        $files = $this->getMock('Illuminate\Filesystem\Filesystem', null);
+        $files = $this->getMock('Illuminate\Filesystem\Filesystem', array('isDirectory'));
         $config = $this->getMock('Illuminate\Config\Repository', array('package'), array(), '', false);
-        $router = $this->getMock('Illuminate\Routing\Router', array('get'));
+        $router = $this->getMock('Illuminate\Routing\Router', array('get'), array(), '', false);
         $captcha = $this->getMock(__NAMESPACE__ . '\Captcha', array('create'), array(), '', false);
         $request = $this->getMock('Illuminate\Http\Request', array('input'), array(), '', false);
 
@@ -66,6 +66,7 @@ class ServiceProviderTest extends \PHPUnit_Framework_TestCase
         $me = $this;
         $formId = uniqid();
 
+        $files->expects($this->exactly(4))->method('isDirectory')->willReturnCallback('is_dir');
         $config->expects($this->once())->method('package')->with('mews/captcha', $path . '/config', 'captcha');
         $router->expects($this->once())->method('get')->willReturnCallback(function ($pattern, $action) use ($me, $formId) {
             $me->assertEquals('captcha', $pattern);
