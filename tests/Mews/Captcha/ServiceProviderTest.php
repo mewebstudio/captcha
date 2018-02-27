@@ -39,7 +39,7 @@ class ServiceProviderTest extends \PHPUnit_Framework_TestCase
                 $me->assertAttributeCount(15, 'backgrounds', $object);
             });
 
-        /** @noinspection PhpParamsInspection */
+        /* @noinspection PhpParamsInspection */
         $provider = new CaptchaServiceProvider($app);
         $provider->register();
     }
@@ -78,7 +78,7 @@ class ServiceProviderTest extends \PHPUnit_Framework_TestCase
         $captcha->expects($this->once())->method('create')->with($formId)->willReturnArgument(0);
         $request->expects($this->once())->method('input')->with('id')->willReturn($formId);
 
-        /** @noinspection PhpParamsInspection */
+        /* @noinspection PhpParamsInspection */
         $provider = new CaptchaServiceProvider($app);
         $provider->boot();
 

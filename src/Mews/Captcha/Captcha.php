@@ -6,24 +6,30 @@ use Illuminate\Support\Str;
 /**
  * Laravel 4 Captcha package
  *
+ * @author Muharrem ERİN <me@mewebstudio.com>
  * @copyright Copyright (c) 2014 MeWebStudio
+ * @license http://www.opensource.org/licenses/mit-license.php The MIT License
  * @version 1.0.1
- * @author Muharrem ERİN
  * @contact me@mewebstudio.com
  * @link http://www.mewebstudio.com
  * @date 2014-01-25
- * @license http://www.opensource.org/licenses/mit-license.php The MIT License
  */
 class Captcha
 {
     protected $config = array();
     protected $hashKey;
 
-    /** @var \Illuminate\Hashing\HasherInterface */
+    /**
+     * @var \Illuminate\Hashing\HasherInterface
+     */
     protected $hasher;
-    /** @var \Illuminate\Session\Store */
+    /**
+     * @var \Illuminate\Session\Store
+     */
     protected $session;
-    /** @var \Illuminate\Routing\UrlGenerator */
+    /**
+     * @var \Illuminate\Routing\UrlGenerator
+     */
     protected $url;
 
     private $assets;
@@ -47,8 +53,8 @@ class Captcha
         $this->session = $session ?: app('session');
         $this->url = $url ?: app('url');
 
-        $this->assets = is_dir($publishPath) ? (is_dir($publishPath . '/assets') ? $publishPath . '/assets' : $publishPath)
-            : realpath(__DIR__ . '/../../../public') . '/assets';
+        $this->assets = !is_dir($publishPath) ? realpath(__DIR__ . '/../../../public') . '/assets'
+            : (is_dir($publishPath . '/assets') ? $publishPath . '/assets' : $publishPath);
         $this->fonts = $this->assets('fonts');
         $this->backgrounds = $this->assets('backgrounds');
     }
@@ -73,9 +79,9 @@ class Captcha
      * It is used internally by this bundle when pointing to "/captcha"
      * Typically, you won't use this function, but use the above img() function instead
      *
-     * @access  public
      * @param   string $formId
      * @return  \Symfony\Component\HttpFoundation\Response
+     * @access  public
      */
     public function create($formId = null)
     {
@@ -90,25 +96,24 @@ class Captcha
         }
         $this->session->put('captchaHash.' . $formId, $this->hashMake($code));
 
-        $bg_image = $this->asset('backgrounds');
-        $bg_image_info = getimagesize($bg_image);
+        $bgImage = $this->asset('backgrounds');
+        $bgImageInfo = getimagesize($bgImage);
 
-        if ($bg_image_info['mime'] == 'image/jpg' || $bg_image_info['mime'] == 'image/jpeg') {
-            $old_image = imagecreatefromjpeg($bg_image);
-        } elseif ($bg_image_info['mime'] == 'image/gif') {
-            $old_image = imagecreatefromgif($bg_image);
-        } elseif ($bg_image_info['mime'] == 'image/png') {
-            $old_image = imagecreatefrompng($bg_image);
+        if ($bgImageInfo['mime'] == 'image/jpg' || $bgImageInfo['mime'] == 'image/jpeg') {
+            $oldImage = imagecreatefromjpeg($bgImage);
+        } elseif ($bgImageInfo['mime'] == 'image/gif') {
+            $oldImage = imagecreatefromgif($bgImage);
+        } elseif ($bgImageInfo['mime'] == 'image/png') {
+            $oldImage = imagecreatefrompng($bgImage);
         }
 
-        $new_image = imagecreatetruecolor($this->config['width'], $this->config['height']);
-        $bg = imagecolorallocate($new_image, 255, 255, 255);
-        imagefill($new_image, 0, 0, $bg);
+        $newImage = imagecreatetruecolor($iw = $this->config['width'], $ih = $this->config['height']);
+        $bg = imagecolorallocate($newImage, 255, 255, 255);
+        imagefill($newImage, 0, 0, $bg);
 
-        if (isset($old_image)) {
-            imagecopyresampled($new_image, $old_image, 0, 0, 0, 0,
-                $this->config['width'], $this->config['height'], $bg_image_info[0], $bg_image_info[1]);
-            imagedestroy($old_image);
+        if (isset($oldImage)) {
+            imagecopyresampled($newImage, $oldImage, 0, 0, 0, 0, $iw, $ih, $bgImageInfo[0], $bgImageInfo[1]);
+            imagedestroy($oldImage);
         }
 
         $codeLength = strlen($code);
@@ -116,13 +121,12 @@ class Captcha
         $space = $spaces[array_rand($spaces)];
 
         for ($i = 0; $i < $codeLength; $i++) {
-            $color_cols = explode(',', $this->asset('colors'));
-            $fg = imagecolorallocate($new_image, trim($color_cols[0]), trim($color_cols[1]), trim($color_cols[2]));
+            $colorCols = explode(',', $this->asset('colors'));
+            $fg = imagecolorallocate($newImage, trim($colorCols[0]), trim($colorCols[1]), trim($colorCols[2]));
 
-            imagettftext($new_image, $this->asset('fontsizes'), mt_rand(-10, 15),
-                (10 + $i * $space), ($this->config['height'] - mt_rand(5, 10)), $fg, $this->asset('fonts'), $code[$i]);
+            imagettftext($newImage, $this->asset('fontsizes'), mt_rand(-10, 15), ($i * $space + 10), ($ih - mt_rand(5, 10)), $fg, $this->asset('fonts'), $code[$i]);
         }
-        imagealphablending($new_image, false);
+        imagealphablending($newImage, false);
 
         $quality = $this->config['quality'];
         $headers = array(
@@ -132,9 +136,9 @@ class Captcha
             'content-disposition' => 'inline; filename=captcha.jpg',
         );
 
-        return Response::stream(function () use ($new_image, $quality) {
-            imagejpeg($new_image, null, $quality);
-            imagedestroy($new_image);
+        return Response::stream(function () use ($newImage, $quality) {
+            imagejpeg($newImage, null, $quality);
+            imagedestroy($newImage);
         }, 200, $headers);
     }
 
@@ -166,9 +170,9 @@ class Captcha
     /**
      * Fonts
      *
-     * @access  public
      * @param   string $type
      * @return  array
+     * @access  public
      */
     public function assets($type = null)
     {
@@ -186,9 +190,9 @@ class Captcha
     /**
      * Select asset
      *
-     * @access  public
      * @param   string $type
      * @return  string
+     * @access  public
      */
     public function asset($type = null)
     {
@@ -213,8 +217,8 @@ class Captcha
      *
      * @param   string $value
      * @param   string $formId
-     * @access  public
      * @return  bool
+     * @access  public
      */
     public function check($value, $formId = null)
     {
@@ -223,9 +227,10 @@ class Captcha
         }
         $captchaHash = $this->session->get('captchaHash.' . $formId);
 
+        // must be of the same length
         $result = !empty($value)
             && !empty($captchaHash)
-            && strlen($value) === $this->config['length'] // must be of the same length right?
+            && strlen($value) === $this->config['length']
             && $this->hashCheck($value, $captchaHash);
 
         // forget the hash to prevent replay
@@ -238,9 +243,9 @@ class Captcha
      * For example, you can use in your view something like
      * <img src="<?php echo Captcha::img(); ?>" alt="" />
      *
-     * @access  public
      * @param   string $formId
      * @return  string
+     * @access  public
      */
     public function img($formId = null)
     {

@@ -19,7 +19,7 @@ class CaptchaTest extends \PHPUnit_Framework_TestCase
         return $captcha;
     }
 
-    static function writeObjectAttribute($object, array $values)
+    public static function writeObjectAttribute($object, array $values)
     {
         foreach ($values as $name => $value) {
             $attribute = new \ReflectionProperty($object, $name);
@@ -70,6 +70,7 @@ class CaptchaTest extends \PHPUnit_Framework_TestCase
      * @param Captcha $captcha
      * @depends testConstructor
      * @requires extension gd
+     * @requires function imagettftext
      */
     public function testCreate($captcha)
     {
@@ -89,14 +90,11 @@ class CaptchaTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
         $this->assertAttributeSame(false, 'streamed', $response);
 
-        $date = with(new \DateTime(null, new \DateTimeZone('UTC')))->format('D, d M Y H:i:s');
-        $headers =
-            "Cache-Control:       max-age=0, must-revalidate, no-cache, no-store, private\r\n" .
-            "Content-Disposition: inline; filename=captcha.jpg\r\n" .
-            "Content-Type:        image/jpeg\r\n" .
-            "Date:                $date GMT\r\n" .
-            "Pragma:              no-cache\r\n";
-        $this->assertEquals($headers, (string)$response->headers);
+        $headers = (string)$response->headers;
+        $this->assertContains('Cache-Control:       max-age=0, must-revalidate, no-cache, no-store', $headers);
+        $this->assertContains('Content-Disposition: inline; filename=captcha.jpg', $headers);
+        $this->assertContains('Content-Type:        image/jpeg', $headers);
+        $this->assertContains('Pragma:              no-cache', $headers);
 
         $this->setOutputCallback(function ($content) {
             $file = tempnam(sys_get_temp_dir(), 'CAP');
