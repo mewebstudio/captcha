@@ -2,12 +2,13 @@
 
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * @property \Illuminate\Container\Container $app
+ */
 class CaptchaServiceProvider extends ServiceProvider
 {
     /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
+     * {@inheritdoc}
      */
     protected $defer = false;
 
@@ -20,28 +21,31 @@ class CaptchaServiceProvider extends ServiceProvider
     {
         $this->package('mews/captcha');
 
-        require __DIR__ . '/../../routes.php';
-        $this->app->validator->resolver(function ($translator, $data, $rules, $messages) {
+        $app = $this->app;
+        $this->app['router']->get('captcha', function () use ($app) {
+            return $app['captcha']->create($app['request']->input('id'));
+        });
+
+        $this->app['validator']->resolver(function ($translator, $data, $rules, $messages) {
             return new CaptchaValidator($translator, $data, $rules, $messages);
         });
     }
 
     /**
-     * Register the service provider.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function register()
     {
         $this->app['captcha'] = $this->app->share(function ($app) {
-            return Captcha::instance();
+            $config = $app['config'];
+            $publishPath = $app['path.public'] . '/packages/mews/captcha';
+
+            return new Captcha($config['captcha::config'], $config['app.key'], $publishPath, $app['hash'], $app['session'], $app['url']);
         });
     }
 
     /**
-     * Get the services provided by the provider.
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function provides()
     {

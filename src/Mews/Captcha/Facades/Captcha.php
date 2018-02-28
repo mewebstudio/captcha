@@ -4,11 +4,8 @@ use Illuminate\Support\Facades\Facade;
 
 class Captcha extends Facade
 {
-
     /**
-     * Get the registered name of the component.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     protected static function getFacadeAccessor()
     {

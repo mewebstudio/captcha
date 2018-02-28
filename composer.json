@@ -16,8 +16,15 @@
     ],
     "require": {
         "php": ">=5.3.0",
-        "illuminate/support": "~4"
-
+        "illuminate/support": "~4",
+        "illuminate/hashing": "~4",
+        "illuminate/session": "~4",
+        "illuminate/validation": "~4",
+        "illuminate/routing": "~4"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "*",
+        "phpunit/phpunit": "~4.0"
     },
     "autoload": {
         "psr-4": {

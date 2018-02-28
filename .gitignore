@@ -1,7 +1,8 @@
-*~
 *.bak
+.DS_Store
 Thumbs.db
 desktop.ini
-vendor
+/vendor
 *.phar
-phpunit.xml
+composer.lock
+.idea/
