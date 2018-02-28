@@ -160,6 +160,11 @@ class Captcha
     protected $sensitive = false;
 
     /**
+     * @var int
+     */
+    protected $textLeftPadding = 4;
+
+    /**
      * Constructor
      *
      * @param Filesystem $files
@@ -314,7 +319,7 @@ class Captcha
         $i = 0;
         foreach(str_split($this->text) as $char)
         {
-            $marginLeft = ($i * $this->image->width() / $this->length);
+            $marginLeft = $this->textLeftPadding +  ($i * ($this->image->width() - $this->textLeftPadding) / $this->length);
 
             $this->image->text($char, $marginLeft, $marginTop, function($font) {
                 $font->file($this->font());
