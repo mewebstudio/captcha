@@ -273,7 +273,7 @@ class Captcha
             $this->image->blur($this->blur);
         }
 
-        return $this->image->response('png', $this->quality);
+        return $this->image;
     }
 
     /**

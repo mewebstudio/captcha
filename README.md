@@ -91,6 +91,7 @@ return [
         'width'     => 120,
         'height'    => 36,
         'quality'   => 90,
+        'type'      => 'png'
     ],
     // ...
 ];
@@ -153,6 +154,15 @@ captcha_img();
 or
 ```php
 Captcha::img();
+```
+
+# Return DATA-URL FOR AJAX REQUEST
+```php
+captcha_data_url();
+```
+or
+```
+Captcha::create('flat')->encode('data-url')->encoded
 ```
 
 # To use different configurations

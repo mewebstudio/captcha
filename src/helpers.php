@@ -46,3 +46,15 @@ if ( ! function_exists('captcha_check')) {
         return app('captcha')->check($value);
     }
 }
+
+
+if ( ! function_exists('captcha_data_url')) {
+    /**
+     * @param $value
+     * @return bool
+     */
+    function captcha_data_url($value)
+    {
+        return app('captcha')->create($value)->encode('data-url')->encoded;
+    }
+}
