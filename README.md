@@ -156,7 +156,7 @@ or
 Captcha::img();
 ```
 
-# Return DATA-URL FOR AJAX REQUEST
+# Return DATA-URL for ajax or wechat application request
 ```php
 captcha_data_url();
 ```
