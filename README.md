@@ -1,3 +1,7 @@
+Only add one useful function for SPA and wechat applications.
+
+Due to the fact that mewebstudio is not merge pull request now,  so I publish a new package. This package would delete when mewebstudio add those functions.
+
 # Captcha for Laravel 5
 
 [![Build Status](https://travis-ci.org/mewebstudio/captcha.svg?branch=master)](https://travis-ci.org/mewebstudio/captcha) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mewebstudio/captcha/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mewebstudio/captcha/?branch=master)
