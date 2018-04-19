@@ -1,5 +1,5 @@
 {
-	"name": "mews/captcha",
+	"name": "heimuya/captcha",
 	"type": "package",
 	"description": "Laravel 5 Captcha Package",
 	"keywords": ["laravel5 Captcha", "laravel5 Security", "Captcha"],
@@ -7,9 +7,9 @@
 	"license": "MIT",
 	"authors": [
 		{
-			"name": "Muharrem ERİN",
-			"email": "me@mewebstudio.com",
-			"homepage": "https://github.com/mewebstudio",
+			"name": "heimuya",
+			"email": "heiserenzhe@163.com",
+			"homepage": "https://github.com/heimuya",
 			"role": "Developer"
 		}
 	],
