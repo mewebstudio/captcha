@@ -1,6 +1,6 @@
 <?php
 
-namespace Mews\Captcha;
+namespace Heimuya\Captcha;
 
 /**
  * Laravel 5 Captcha package
@@ -24,7 +24,7 @@ use Illuminate\Session\Store as Session;
 
 /**
  * Class Captcha
- * @package Mews\Captcha
+ * @package Heimuya\Captcha
  */
 class Captcha
 {

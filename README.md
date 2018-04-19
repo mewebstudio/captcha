@@ -12,14 +12,14 @@ for Laravel 4 [Captcha for Laravel Laravel 4](https://github.com/mewebstudio/cap
 ## Installation
 
 The Captcha Service Provider can be installed via [Composer](http://getcomposer.org) by requiring the
-`mews/captcha` package and setting the `minimum-stability` to `dev` (required for Laravel 5) in your
+`Heimuya/captcha` package and setting the `minimum-stability` to `dev` (required for Laravel 5) in your
 project's `composer.json`.
 
 ```json
 {
     "require": {
         "laravel/framework": "5.0.*",
-        "mews/captcha": "~2.0"
+        "Heimuya/captcha": "~2.0"
     },
     "minimum-stability": "dev"
 }
@@ -29,12 +29,12 @@ or
 
 Require this package with composer:
 ```
-composer require mews/captcha
+composer require Heimuya/captcha
 ```
 
 Update your packages with ```composer update``` or install with ```composer install```.
 
-In Windows, you'll need to include the GD2 DLL `php_gd2.dll` in php.ini. And you also need include `php_fileinfo.dll` and `php_mbstring.dll` to fit the requirements of `mews/captcha`'s dependencies.
+In Windows, you'll need to include the GD2 DLL `php_gd2.dll` in php.ini. And you also need include `php_fileinfo.dll` and `php_mbstring.dll` to fit the requirements of `Heimuya/captcha`'s dependencies.
 
 
 
@@ -49,14 +49,14 @@ Find the `providers` key in `config/app.php` and register the Captcha Service Pr
 ```php
     'providers' => [
         // ...
-        'Mews\Captcha\CaptchaServiceProvider',
+        'Heimuya\Captcha\CaptchaServiceProvider',
     ]
 ```
 for Laravel 5.1+
 ```php
     'providers' => [
         // ...
-        Mews\Captcha\CaptchaServiceProvider::class,
+        Heimuya\Captcha\CaptchaServiceProvider::class,
     ]
 ```
 
@@ -65,14 +65,14 @@ Find the `aliases` key in `config/app.php`.
 ```php
     'aliases' => [
         // ...
-        'Captcha' => 'Mews\Captcha\Facades\Captcha',
+        'Captcha' => 'Heimuya\Captcha\Facades\Captcha',
     ]
 ```
 for Laravel 5.1+
 ```php
     'aliases' => [
         // ...
-        'Captcha' => Mews\Captcha\Facades\Captcha::class,
+        'Captcha' => Heimuya\Captcha\Facades\Captcha::class,
     ]
 ```
 
@@ -180,7 +180,7 @@ Based on [Intervention Image](https://github.com/Intervention/image)
 ## Links
 * [Intervention Image](https://github.com/Intervention/image)
 * [L5 Captcha on Github](https://github.com/mewebstudio/captcha)
-* [L5 Captcha on Packagist](https://packagist.org/packages/mews/captcha)
+* [L5 Captcha on Packagist](https://packagist.org/packages/Heimuya/captcha)
 * [For L4 on Github](https://github.com/mewebstudio/captcha/tree/master-l4)
 * [License](http://www.opensource.org/licenses/mit-license.php)
 * [Laravel website](http://laravel.com)
