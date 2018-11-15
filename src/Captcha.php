@@ -116,7 +116,7 @@ class Captcha
     protected $characters;
 
     /**
-     * @var array
+     * @var string
      */
     protected $text;
 
@@ -192,7 +192,7 @@ class Captcha
         $this->session = $session;
         $this->hasher = $hasher;
         $this->str = $str;
-        $this->characters = config('captcha.characters',[]);
+        $this->characters = config('captcha.characters','2346789abcdefghjmnpqrtuxyzABCDEFGHJMNPQRTUXYZ');
     }
 
     /**
@@ -300,24 +300,27 @@ class Captcha
      */
     protected function generate()
     {
-	    $bag = [];
-	    for($i = 0; $i < $this->length; $i++)
-	    {
-		    $char = $this->characters[rand(0, count($this->characters) - 1)];
-		    $bag[] = $this->sensitive ? $char : $this->str->lower($char);
-	    }
+        $characters = str_split($this->characters);
 
-	    $hash = $this->hasher->make(implode('', $bag));
-	    $this->session->put('captcha', [
-		    'sensitive' => $this->sensitive,
-		    'key'       => $hash
-	    ]);
+        $bag = '';
+        for($i = 0; $i < $this->length; $i++)
+        {
+            $bag .= $characters[rand(0, count($characters) - 1)];
+        }
 
-	    return [
-		    'value'     => $bag,
-		    'sensitive' => $this->sensitive,
-		    'key'       => $hash
-	    ];
+        $bag = $this->sensitive ? $bag : $this->str->lower($bag);
+
+        $hash = $this->hasher->make($bag);
+        $this->session->put('captcha', [
+            'sensitive' => $this->sensitive,
+            'key'       => $hash
+        ]);
+
+        return [
+        	'value'     => $bag,
+	        'sensitive' => $this->sensitive,
+	        'key'       => $hash
+        ];
     }
 
     /**
@@ -325,24 +328,24 @@ class Captcha
      */
     protected function text()
     {
-	    $marginTop = $this->image->height() / $this->length;
+        $marginTop = $this->image->height() / $this->length;
 
-	    $i = 0;
-	    foreach($this->text as $char)
-	    {
-		    $marginLeft = $this->textLeftPadding +  ($i * ($this->image->width() - $this->textLeftPadding) / $this->length);
+        $i = 0;
+        foreach(str_split($this->text) as $char)
+        {
+            $marginLeft = $this->textLeftPadding +  ($i * ($this->image->width() - $this->textLeftPadding) / $this->length);
 
-		    $this->image->text($char, $marginLeft, $marginTop, function($font) {
-			    $font->file($this->font());
-			    $font->size($this->fontSize());
-			    $font->color($this->fontColor());
-			    $font->align('left');
-			    $font->valign('top');
-			    $font->angle($this->angle());
-		    });
+            $this->image->text($char, $marginLeft, $marginTop, function($font) {
+                $font->file($this->font());
+                $font->size($this->fontSize());
+                $font->color($this->fontColor());
+                $font->align('left');
+                $font->valign('top');
+                $font->angle($this->angle());
+            });
 
-		    $i++;
-	    }
+            $i++;
+        }
     }
 
     /**
