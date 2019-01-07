@@ -323,9 +323,7 @@ class Captcha
             $key = $this->sensitive ? $bag : $this->str->lower($bag);
         }
 
-        $bag = $this->sensitive ? $bag : $this->str->lower($bag);
-
-        $hash = $this->hasher->make($bag);
+        $hash = $this->hasher->make($key);
         $this->session->put('captcha', [
             'sensitive' => $this->sensitive,
             'key'       => $hash
