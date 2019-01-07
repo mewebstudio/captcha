@@ -35,14 +35,24 @@ if ( ! function_exists('captcha_img')) {
     }
 }
 
-
 if ( ! function_exists('captcha_check')) {
-    /**
-     * @param $value
-     * @return bool
-     */
-    function captcha_check($value)
-    {
-        return app('captcha')->check($value);
-    }
+	/**
+	 * @param $value
+	 * @return bool
+	 */
+	function captcha_check($value)
+	{
+		return app('captcha')->check($value);
+	}
+}
+
+if ( ! function_exists('captcha_api_check')) {
+	/**
+	 * @param $value
+	 * @return bool
+	 */
+	function captcha_api_check($value, $key)
+	{
+		return app('captcha')->check_api($value, $key);
+	}
 }

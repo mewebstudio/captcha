@@ -18,6 +18,7 @@ use Exception;
 use Illuminate\Config\Repository;
 use Illuminate\Hashing\BcryptHasher as Hasher;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
 use Intervention\Image\ImageManager;
 use Illuminate\Session\Store as Session;
@@ -165,6 +166,11 @@ class Captcha
     protected $math = false;
 
     /**
+     * @var int
+     */
+    protected $textLeftPadding = 4;
+
+    /**
      * Constructor
      *
      * @param Filesystem $files
@@ -213,24 +219,26 @@ class Captcha
      * Create captcha image
      *
      * @param string $config
+     * @param boolean $api
      * @return ImageManager->response
      */
-    public function create($config = 'default')
+    public function create($config = 'default', $api = false)
     {
         $this->backgrounds = $this->files->files(__DIR__ . '/../assets/backgrounds');
         $this->fonts = $this->files->files(__DIR__ . '/../assets/fonts');
-        
+
         if (app()->version() >= 5.5){
             $this->fonts = array_map(function($file) {
                 return $file->getPathName();
             }, $this->fonts);
         }
-        
+
         $this->fonts = array_values($this->fonts); //reset fonts array index
 
         $this->configure($config);
 
-        $this->text = $this->generate();
+        $generator = $this->generate();
+        $this->text = $generator['value'];
 
         $this->canvas = $this->imageManager->canvas(
             $this->width,
@@ -273,7 +281,11 @@ class Captcha
             $this->image->blur($this->blur);
         }
 
-        return $this->image->response('png', $this->quality);
+        return $api ? [
+	        'sensitive' => $generator['sensitive'],
+	        'key'       => $generator['key'],
+        	'img'       => $this->image->encode('data-url')->encoded
+        ] : $this->image->response('png', $this->quality);
     }
 
     /**
@@ -311,12 +323,19 @@ class Captcha
             $key = $this->sensitive ? $bag : $this->str->lower($bag);
         }
 
+        $bag = $this->sensitive ? $bag : $this->str->lower($bag);
+
+        $hash = $this->hasher->make($bag);
         $this->session->put('captcha', [
             'sensitive' => $this->sensitive,
-            'key'       => $this->hasher->make($key)
+            'key'       => $hash
         ]);
 
-        return $bag;
+        return [
+        	'value'     => $bag,
+	        'sensitive' => $this->sensitive,
+	        'key'       => $hash
+        ];
     }
 
     /**
@@ -329,7 +348,7 @@ class Captcha
         $i = 0;
         foreach(str_split($this->text) as $char)
         {
-            $marginLeft = ($i * $this->image->width() / $this->length);
+            $marginLeft = $this->textLeftPadding +  ($i * ($this->image->width() - $this->textLeftPadding) / $this->length);
 
             $this->image->text($char, $marginLeft, $marginTop, function($font) {
                 $font->file($this->font());
@@ -415,30 +434,42 @@ class Captcha
         return $this->image;
     }
 
-    /**
-     * Captcha check
-     *
-     * @param $value
-     * @return bool
-     */
-    public function check($value)
-    {
-        if ( ! $this->session->has('captcha'))
-        {
-            return false;
-        }
+	/**
+	 * Captcha check
+	 *
+	 * @param $value
+	 * @return bool
+	 */
+	public function check($value)
+	{
+		if ( ! $this->session->has('captcha'))
+		{
+			return false;
+		}
 
-        $key = $this->session->get('captcha.key');
+		$key = $this->session->get('captcha.key');
+		$sensitive = $this->session->get('captcha.sensitive');
 
-        if ( ! $this->session->get('captcha.sensitive'))
-        {
-            $value = $this->str->lower($value);
-        }
+		if ( ! $sensitive)
+		{
+			$value = $this->str->lower($value);
+		}
 
-        $this->session->remove('captcha');
+		$this->session->remove('captcha');
 
-        return $this->hasher->check($value, $key);
-    }
+		return $this->hasher->check($value, $key);
+	}
+
+	/**
+	 * Captcha check
+	 *
+	 * @param $value
+	 * @return bool
+	 */
+	public function check_api($value, $key)
+	{
+		return $this->hasher->check($value, $key);
+	}
 
     /**
      * Generate captcha image source
@@ -455,11 +486,21 @@ class Captcha
      * Generate captcha image html tag
      *
      * @param null $config
+     * @param array $attrs HTML attributes supplied to the image tag where key is the attribute
+     * and the value is the attribute value
      * @return string
      */
-    public function img($config = null)
+    public function img($config = null, $attrs = [])
     {
-        return '<img src="' . $this->src($config) . '" alt="captcha">';
+        $attrs_str = '';
+        foreach($attrs as $attr => $value){
+            if ($attr == 'src'){
+                //Neglect src attribute
+                continue;
+            }
+            $attrs_str .= $attr.'="'.$value.'" ';
+        }
+        return '<img src="' . $this->src($config) . '" '. trim($attrs_str).'>';
     }
 
 }
