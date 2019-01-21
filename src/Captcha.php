@@ -440,9 +440,14 @@ class Captcha
 			$value = $this->str->lower($value);
 		}
 
-		$this->session->remove('captcha');
 
-		return $this->hasher->check($value, $key);
+        $res = $this->hasher->check($value, $key);
+        //  if verify pass,remove session
+        if ($res) {
+            $this->session->remove('captcha');
+        }
+
+        return $res;
 	}
 
 	/**
