@@ -161,6 +161,11 @@ class Captcha
     protected $sensitive = false;
 
     /**
+     * @var bool
+     */
+    protected $math = false;
+
+    /**
      * @var int
      */
     protected $textLeftPadding = 4;
@@ -221,13 +226,13 @@ class Captcha
     {
         $this->backgrounds = $this->files->files(__DIR__ . '/../assets/backgrounds');
         $this->fonts = $this->files->files(__DIR__ . '/../assets/fonts');
-        
+
         if (app()->version() >= 5.5){
             $this->fonts = array_map(function($file) {
                 return $file->getPathName();
             }, $this->fonts);
         }
-        
+
         $this->fonts = array_values($this->fonts); //reset fonts array index
 
         $this->configure($config);
@@ -303,14 +308,22 @@ class Captcha
         $characters = str_split($this->characters);
 
         $bag = '';
-        for($i = 0; $i < $this->length; $i++)
-        {
-            $bag .= $characters[rand(0, count($characters) - 1)];
+        $key = '';
+
+        if ($this->math) {
+            $x = random_int(10, 30);
+            $y = random_int(1, 9);
+            $bag = "$x + $y = ";
+            $key = $x + $y;
+            $key .= '';
+        } else {
+            for ($i = 0; $i < $this->length; $i++) {
+                $bag .= $characters[rand(0, count($characters) - 1)];
+            }
+            $key = $this->sensitive ? $bag : $this->str->lower($bag);
         }
 
-        $bag = $this->sensitive ? $bag : $this->str->lower($bag);
-
-        $hash = $this->hasher->make($bag);
+        $hash = $this->hasher->make($key);
         $this->session->put('captcha', [
             'sensitive' => $this->sensitive,
             'key'       => $hash

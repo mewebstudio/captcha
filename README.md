@@ -7,7 +7,7 @@ A simple [Laravel 5](http://www.laravel.com/) service provider for including the
 for Laravel 4 [Captcha for Laravel Laravel 4](https://github.com/mewebstudio/captcha/tree/master-l4)
 
 ## Preview
-![Preview](http://i.imgur.com/HYtr744.png)
+![Preview](https://image.ibb.co/kZxMLm/image.png)
 
 ## Installation
 
@@ -91,6 +91,7 @@ return [
         'width'     => 120,
         'height'    => 36,
         'quality'   => 90,
+        'math'      => true, //Enable Math Captcha
     ],
     // ...
 ];
