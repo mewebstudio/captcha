@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
 use Intervention\Image\ImageManager;
 use Illuminate\Session\Store as Session;
+use Illuminate\Support\HtmlString;
 
 /**
  * Class Captcha
@@ -503,7 +504,7 @@ class Captcha
             }
             $attrs_str .= $attr.'="'.$value.'" ';
         }
-        return '<img src="' . $this->src($config) . '" '. trim($attrs_str).'>';
+        return new HtmlString('<img src="'.$this->src($config).'" '.trim($attrs_str).'>');
     }
 
 }
