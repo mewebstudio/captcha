@@ -10,7 +10,6 @@ use Laravel\Lumen\Routing\Controller;
  */
 class LumenCaptchaController extends Controller
 {
-
     /**
      * get CAPTCHA
      *
@@ -22,5 +21,4 @@ class LumenCaptchaController extends Controller
     {
         return $captcha->create($config);
     }
-
 }
