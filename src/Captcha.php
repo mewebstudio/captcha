@@ -345,22 +345,23 @@ class Captcha
     {
 	    $marginTop = $this->image->height() / $this->length;
 
-	    $i = 0;
-	    foreach($this->text as $char)
-	    {
-		    $marginLeft = $this->textLeftPadding +  ($i * ($this->image->width() - $this->textLeftPadding) / $this->length);
+	    $text = $this->text;
+	    if (is_string($text)) {
+            $text = str_split($text);
+        }
 
-		    $this->image->text($char, $marginLeft, $marginTop, function($font) {
-			    $font->file($this->font());
-			    $font->size($this->fontSize());
-			    $font->color($this->fontColor());
-			    $font->align('left');
-			    $font->valign('top');
-			    $font->angle($this->angle());
-		    });
+        foreach($text as $key => $char) {
+            $marginLeft = $this->textLeftPadding +  ($key * ($this->image->width() - $this->textLeftPadding) / $this->length);
 
-		    $i++;
-	    }
+            $this->image->text($char, $marginLeft, $marginTop, function($font) {
+                $font->file($this->font());
+                $font->size($this->fontSize());
+                $font->color($this->fontColor());
+                $font->align('left');
+                $font->valign('top');
+                $font->angle($this->angle());
+            });
+        }
     }
 
     /**

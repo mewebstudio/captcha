@@ -5,3 +5,4 @@ composer.lock
 vendor
 /.idea
 /.settings
+.DS_Store
