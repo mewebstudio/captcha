@@ -171,6 +171,11 @@ class Captcha
     protected $textLeftPadding = 4;
 
     /**
+     * @var string
+     */
+    protected $fontsDirectory;
+
+    /**
      * Constructor
      *
      * @param Filesystem $files
@@ -198,6 +203,7 @@ class Captcha
         $this->hasher = $hasher;
         $this->str = $str;
         $this->characters = config('captcha.characters', ['1', '2', '3', '4', '6', '7', '8', '9']);
+        $this->fontsDirectory = config('captcha.fontsDirectory', __DIR__ . '/../assets/fonts');
     }
 
     /**
@@ -223,7 +229,7 @@ class Captcha
     public function create($config = 'default', $api = false)
     {
         $this->backgrounds = $this->files->files(__DIR__ . '/../assets/backgrounds');
-        $this->fonts = $this->files->files(__DIR__ . '/../assets/fonts');
+        $this->fonts = $this->files->files($this->fontsDirectory);
 
         if (app()->version() >= 5.5) {
             $this->fonts = array_map(function ($file) {
