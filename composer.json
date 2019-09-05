@@ -1,8 +1,8 @@
 {
 	"name": "mews/captcha",
 	"type": "package",
-	"description": "Laravel 5 Captcha Package",
-	"keywords": ["laravel5 Captcha", "laravel5 Security", "Captcha"],
+	"description": "Laravel 5 & 6 Captcha Package",
+	"keywords": ["laravel6 Captcha", "laravel6 Security", "laravel6 Captcha", "laravel5 Security", "Captcha"],
 	"homepage": "https://github.com/mewebstudio/captcha",
 	"license": "MIT",
 	"authors": [
@@ -16,10 +16,10 @@
 	"require": {
 		"php": ">=5.4",
 		"ext-gd": "*",
-		"illuminate/config": "~5.0|~6.0",
-		"illuminate/filesystem": "~5.0|~6.0",
-		"illuminate/support": "~5.0|~6.0",
-		"illuminate/hashing": "~5.0|~6.0",
+		"illuminate/config": "~5.0|^6.0",
+		"illuminate/filesystem": "~5.0|^6.0",
+		"illuminate/support": "~5.0|^6.0",
+		"illuminate/hashing": "~5.0",
 		"intervention/image": "~2.5"
 	},
 	"require-dev": {
