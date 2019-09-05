@@ -20,6 +20,7 @@ use Illuminate\Hashing\BcryptHasher as Hasher;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
+use Intervention\Image\Image;
 use Intervention\Image\ImageManager;
 use Illuminate\Session\Store as Session;
 use Illuminate\Support\HtmlString;
@@ -225,6 +226,7 @@ class Captcha
      * @param string $config
      * @param boolean $api
      * @return ImageManager->response
+     * @throws Exception
      */
     public function create($config = 'default', $api = false)
     {
@@ -298,7 +300,8 @@ class Captcha
     /**
      * Generate captcha text
      *
-     * @return string
+     * @return array
+     * @throws Exception
      */
     protected function generate()
     {
@@ -409,7 +412,7 @@ class Captcha
     /**
      * Random image lines
      *
-     * @return \Intervention\Image\Image
+     * @return Image
      */
     protected function lines()
     {

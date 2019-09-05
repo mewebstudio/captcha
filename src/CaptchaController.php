@@ -2,7 +2,9 @@
 
 namespace Mews\Captcha;
 
+use Exception;
 use Illuminate\Routing\Controller;
+use Intervention\Image\ImageManager;
 
 /**
  * Class CaptchaController
@@ -13,9 +15,10 @@ class CaptchaController extends Controller
     /**
      * get CAPTCHA
      *
-     * @param \Mews\Captcha\Captcha $captcha
+     * @param Captcha $captcha
      * @param string $config
-     * @return \Intervention\Image\ImageManager->response
+     * @return ImageManager->response
+     * @throws Exception
      */
     public function getCaptcha(Captcha $captcha, $config = 'default')
     {
@@ -29,9 +32,10 @@ class CaptchaController extends Controller
     /**
      * get CAPTCHA api
      *
-     * @param \Mews\Captcha\Captcha $captcha
+     * @param Captcha $captcha
      * @param string $config
-     * @return \Intervention\Image\ImageManager->response
+     * @return ImageManager->response
+     * @throws Exception
      */
     public function getCaptchaApi(Captcha $captcha, $config = 'default')
     {
