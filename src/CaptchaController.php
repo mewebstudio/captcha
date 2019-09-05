@@ -2,6 +2,7 @@
 
 namespace Mews\Captcha;
 
+use Exception;
 use Illuminate\Routing\Controller;
 
 /**
@@ -13,11 +14,12 @@ class CaptchaController extends Controller
     /**
      * get CAPTCHA
      *
-     * @param \Mews\Captcha\Captcha $captcha
+     * @param Captcha $captcha
      * @param string $config
-     * @return \Intervention\Image\ImageManager->response
+     * @return array|mixed
+     * @throws Exception
      */
-    public function getCaptcha(Captcha $captcha, $config = 'default')
+    public function getCaptcha(Captcha $captcha, string $config = 'default')
     {
         if (ob_get_contents()) {
             ob_clean();
@@ -29,11 +31,12 @@ class CaptchaController extends Controller
     /**
      * get CAPTCHA api
      *
-     * @param \Mews\Captcha\Captcha $captcha
+     * @param Captcha $captcha
      * @param string $config
-     * @return \Intervention\Image\ImageManager->response
+     * @return array|mixed
+     * @throws Exception
      */
-    public function getCaptchaApi(Captcha $captcha, $config = 'default')
+    public function getCaptchaApi(Captcha $captcha, string $config = 'default')
     {
         return $captcha->create($config, true);
     }
