@@ -4,8 +4,26 @@ php:
   - 7.2
   - 7.3
 
+# This triggers builds to run on the new TravisCI infrastructure.
+# See: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
+sudo: false
+
+## Cache composer
+cache:
+  directories:
+    - $HOME/.composer/cache
+
 before_script:
   - travis_retry composer self-update
-  - travis_retry composer install --prefer-source --no-interaction
+  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-dist
 
-script: make test
+script:
+  - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
+
+matrix:
+  include:
+    - php: 7.2
+      env: 'COMPOSER_FLAGS="--prefer-stable --prefer-lowest"'
+
+after_script:
+  - if [[ $TRAVIS_PHP_VERSION != '7.3' && $TRAVIS_PHP_VERSION != '7.2' ]]; then php vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover; fi
