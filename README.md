@@ -138,7 +138,7 @@ Captcha::create();
 
 # Return URL
 ```php
-captcha_src('default');
+captcha_src();
 ```
 or
 ```
