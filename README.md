@@ -138,11 +138,11 @@ Captcha::create();
 
 # Return URL
 ```php
-captcha_src();
+captcha_src('default');
 ```
 or
 ```
-Captcha::src();
+Captcha::src('default');
 ```
 
 # Return HTML
