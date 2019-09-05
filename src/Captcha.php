@@ -478,23 +478,23 @@ class Captcha
     /**
      * Generate captcha image source
      *
-     * @param string|null $config
+     * @param string $config
      * @return string
      */
-    public function src(?string $config): string
+    public function src(string $config = 'default'): string
     {
-        return url('captcha' . ($config ? '/' . $config : '/default')) . '?' . $this->str->random(8);
+        return url('captcha/' . $config) . '?' . $this->str->random(8);
     }
 
     /**
      * Generate captcha image html tag
      *
-     * @param string|null $config
-     * @param array|null $attrs
+     * @param string $config
+     * @param array $attrs
      * $attrs -> HTML attributes supplied to the image tag where key is the attribute and the value is the attribute value
      * @return string
      */
-    public function img(?string $config, ?array $attrs): string
+    public function img(string $config = 'default', array $attrs = []): string
     {
         $attrs_str = '';
         foreach ($attrs as $attr => $value) {
