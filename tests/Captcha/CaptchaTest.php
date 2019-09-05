@@ -2,9 +2,9 @@
 
 namespace Mews\Tests\Captcha;
 
-use Mockery;
+use PHPUnit\Framework\TestCase;
 
-class CaptchaTest extends \PHPUnit_Framework_TestCase
+class CaptchaTest extends TestCase
 {
     public function testConstructor()
     {

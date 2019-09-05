@@ -1,12 +1,14 @@
 <?php
 
-if (!function_exists('captcha')) {
+use Intervention\Image\ImageManager;
 
+if (!function_exists('captcha')) {
     /**
      * @param string $config
-     * @return mixed
+     * @return array|ImageManager|mixed
+     * @throws Exception
      */
-    function captcha($config = 'default')
+    function captcha(string $config = 'default')
     {
         return app('captcha')->create($config);
     }
@@ -17,7 +19,7 @@ if (!function_exists('captcha_src')) {
      * @param string $config
      * @return string
      */
-    function captcha_src($config = 'default')
+    function captcha_src(string $config = 'default'): string
     {
         return app('captcha')->src($config);
     }
@@ -27,9 +29,9 @@ if (!function_exists('captcha_img')) {
 
     /**
      * @param string $config
-     * @return mixed
+     * @return string
      */
-    function captcha_img($config = 'default')
+    function captcha_img(string $config = 'default'): string
     {
         return app('captcha')->img($config);
     }
@@ -37,10 +39,10 @@ if (!function_exists('captcha_img')) {
 
 if (!function_exists('captcha_check')) {
     /**
-     * @param $value
+     * @param string $value
      * @return bool
      */
-    function captcha_check($value)
+    function captcha_check(string $value): bool
     {
         return app('captcha')->check($value);
     }
@@ -48,10 +50,11 @@ if (!function_exists('captcha_check')) {
 
 if (!function_exists('captcha_api_check')) {
     /**
-     * @param $value
+     * @param string $value
+     * @param string $key
      * @return bool
      */
-    function captcha_api_check($value, $key)
+    function captcha_api_check(string $value, string $key): bool
     {
         return app('captcha')->check_api($value, $key);
     }

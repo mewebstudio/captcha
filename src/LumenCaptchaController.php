@@ -3,7 +3,6 @@
 namespace Mews\Captcha;
 
 use Exception;
-use Intervention\Image\ImageManager;
 use Laravel\Lumen\Routing\Controller;
 
 /**
@@ -17,7 +16,7 @@ class LumenCaptchaController extends Controller
      *
      * @param Captcha $captcha
      * @param string $config
-     * @return ImageManager->response
+     * @return array|mixed
      * @throws Exception
      */
     public function getCaptcha(Captcha $captcha, $config = 'default')
