@@ -19,7 +19,7 @@
 		"illuminate/config": "~5.0|^6.0",
 		"illuminate/filesystem": "~5.0|^6.0",
 		"illuminate/support": "~5.0|^6.0",
-		"illuminate/hashing": "~5.0",
+		"illuminate/hashing": "~5.0|^6.0",
 		"intervention/image": "~2.5"
 	},
 	"require-dev": {
