@@ -15,9 +15,9 @@ class CaptchaServiceProvider extends ServiceProvider
     /**
      * Boot the service provider.
      *
-     * @return null
+     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         // Publish configuration files
         $this->publishes([
@@ -61,7 +61,7 @@ class CaptchaServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         // Merge configs
         $this->mergeConfigFrom(

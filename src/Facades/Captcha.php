@@ -5,7 +5,7 @@ namespace Mews\Captcha\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Mews\Captcha
+ * @see \Mews\Captcha\Captcha
  */
 class Captcha extends Facade
 {
