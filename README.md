@@ -132,7 +132,7 @@ You get key and img from this url
 and verify the captcha using this method:
 ```php
     //key is the one that you got from json response
-    $rules = ['captcha' => 'required|captcha:'. request('key')];
+    $rules = ['captcha' => 'required|captcha_api:'. request('key')];
     $validator = validator()->make(request()->all(), $rules);
     if ($validator->fails()) {
         return response()->json([
