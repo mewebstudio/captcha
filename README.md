@@ -102,6 +102,7 @@ return [
 ```
 
 ## Example Usage
+### Session Mode:
 ```php
 
     // [your site path]/Http/routes.php
@@ -124,6 +125,23 @@ return [
         $form .= '</form>';
         return $form;
     });
+```
+### Stateless Mode:
+You get key and img from this url
+`http://localhost/captcha/api/math`
+and verify the captcha using this method:
+```php
+    //key is the one that you got from json response
+    $rules = ['captcha' => 'required|captcha_api:'. request('key')];
+    $validator = validator()->make(request()->all(), $rules);
+    if ($validator->fails()) {
+        return response()->json([
+            'message' => 'invalid captcha',
+        ]);
+
+    } else {
+        //do the job
+    }
 ```
 
 # Return Image
