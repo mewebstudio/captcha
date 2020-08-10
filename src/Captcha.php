@@ -178,6 +178,11 @@ class Captcha
     protected $fontsDirectory;
 
     /**
+     * @var string
+     */
+    protected $expire;
+
+    /**
      * Constructor
      *
      * @param Filesystem $files
