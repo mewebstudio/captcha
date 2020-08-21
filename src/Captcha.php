@@ -25,6 +25,7 @@ use Intervention\Image\Image;
 use Intervention\Image\ImageManager;
 use Illuminate\Session\Store as Session;
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * Class Captcha
@@ -178,6 +179,11 @@ class Captcha
     protected $fontsDirectory;
 
     /**
+     * @var string
+     */
+    protected $expire;
+
+    /**
      * Constructor
      *
      * @param Filesystem $files
@@ -279,6 +285,10 @@ class Captcha
         }
         if ($this->blur) {
             $this->image->blur($this->blur);
+        }
+
+        if ($api) {
+            Cache::put('captcha_record_' . $generator['key'], $generator['value'], $this->expire);
         }
 
         return $api ? [
@@ -472,6 +482,10 @@ class Captcha
      */
     public function check_api($value, $key): bool
     {
+        if (!Cache::pull('captcha_record_' . $key)) {
+            return false;
+        }
+
         return $this->hasher->check($value, $key);
     }
 
