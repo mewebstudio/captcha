@@ -179,9 +179,9 @@ class Captcha
     protected $fontsDirectory;
 
     /**
-     * @var string
+     * @var int
      */
-    protected $expire;
+    protected $expire = 60;
 
     /**
      * Constructor
