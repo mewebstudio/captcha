@@ -187,7 +187,7 @@ class Captcha
     /**
      * @var bool
      */
-    protected $encrypt = false;
+    protected $encrypt = true;
     
     /**
      * Constructor
