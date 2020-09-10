@@ -26,6 +26,7 @@ use Intervention\Image\ImageManager;
 use Illuminate\Session\Store as Session;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Crypt;
 
 /**
  * Class Captcha
@@ -179,10 +180,15 @@ class Captcha
     protected $fontsDirectory;
 
     /**
-     * @var string
+     * @var int
      */
-    protected $expire;
+    protected $expire = 60;
 
+    /**
+     * @var bool
+     */
+    protected $encrypt = true;
+    
     /**
      * Constructor
      *
@@ -335,6 +341,8 @@ class Captcha
         }
 
         $hash = $this->hasher->make($key);
+        if($this->encrypt) $hash = Crypt::encrypt($hash);
+        
         $this->session->put('captcha', [
             'sensitive' => $this->sensitive,
             'key' => $hash
@@ -464,6 +472,7 @@ class Captcha
             $value = $this->str->lower($value);
         }
 
+        if($this->encrypt) $key = Crypt::decrypt($key);
         $check = $this->hasher->check($value, $key);
         // if verify pass,remove session
         if ($check) {
@@ -486,6 +495,7 @@ class Captcha
             return false;
         }
 
+        if($this->encrypt) $key = Crypt::decrypt($key);
         return $this->hasher->check($value, $key);
     }
 
