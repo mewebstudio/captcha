@@ -52,7 +52,7 @@ class CaptchaServiceProvider extends ServiceProvider
 
         // Validator extensions
         $validator->extend('captcha_api', function ($attribute, $value, $parameters) {
-            return captcha_api_check($value, $parameters[0]);
+            return captcha_api_check($value, $parameters[0], $parameters[1] ?? 'default');
         });
     }
 
