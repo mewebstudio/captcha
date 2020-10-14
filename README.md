@@ -13,6 +13,20 @@ for Laravel 4 [Captcha for Laravel Laravel 4](https://github.com/mewebstudio/cap
 ## Preview
 ![Preview](https://image.ibb.co/kZxMLm/image.png)
 
+- [Captcha for Laravel 5/6/7](#captcha-for-laravel-5-6-7)
+  * [Preview](#preview)
+  * [Installation](#installation)
+  * [Usage](#usage)
+  * [Configuration](#configuration)
+  * [Example Usage](#example-usage)
+    + [Session Mode:](#session-mode-)
+    + [Stateless Mode:](#stateless-mode-)
+- [Return Image](#return-image)
+- [Return URL](#return-url)
+- [Return HTML](#return-html)
+- [To use different configurations](#to-use-different-configurations)
+  * [Links](#links)
+  
 ## Installation
 
 The Captcha Service Provider can be installed via [Composer](http://getcomposer.org) by requiring the
