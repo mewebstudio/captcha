@@ -500,6 +500,7 @@ class Captcha
 
         $this->configure($config);
 
+        if(!$this->sensitive) $value = $this->str->lower($value);
         if($this->encrypt) $key = Crypt::decrypt($key);
         return $this->hasher->check($value, $key);
     }
