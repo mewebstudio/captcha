@@ -172,7 +172,7 @@ class Captcha
     /**
      * @var int
      */
-    protected $textLeftPadding = 4;
+    protected $textLeftPadding = 9; // was 4
 
     /**
      * @var string
@@ -256,8 +256,20 @@ class Captcha
 
         $this->configure($config);
 
-        $generator = $this->generate();
-        $this->text = $generator['value'];
+        /** Determine which $bag to use for captcha text */
+        if ($this->session->has('captcha')) {
+            $captcha = $this->session->get('captcha');
+        } else {
+            $captcha = array('valid' => 'no');
+        }
+
+        if ($captcha['valid'] == 'yes') {
+            $this->text = $this->keep($captcha['value']);
+        } else {
+            $generator = $this->generate();
+            $this->text = $generator['value'];
+        }
+        /** End of additional code */
 
         $this->canvas = $this->imageManager->canvas(
             $this->width,
@@ -344,6 +356,8 @@ class Captcha
         if($this->encrypt) $hash = Crypt::encrypt($hash);
         
         $this->session->put('captcha', [
+            'value' => $key, // added captcha string
+            'valid' => 'no', // added verification 
             'sensitive' => $this->sensitive,
             'key' => $hash,
             'encrypt' => $this->encrypt
@@ -351,9 +365,31 @@ class Captcha
 
         return [
             'value' => $bag,
+            'valid' => 'no', // added verification 
             'sensitive' => $this->sensitive,
             'key' => $hash
         ];
+    }
+
+    /**
+     * Keep existing captcha text - this is an addition
+     * 
+     * @param  string $bag keep existing captcha session
+     * @return  string  
+     */
+    protected function keep($bag)
+    {
+        $hash = $this->hasher->make($bag);
+        if($this->encrypt) $hash = Crypt::encrypt($hash);
+
+        $this->session->put('captcha', [
+            'value' => $bag, // added captcha value
+            'sensitive' => $this->sensitive,
+            'key' => $hash,
+            'encrypt' => $this->encrypt
+        ]);
+
+        return $bag;
     }
 
     /**
@@ -478,7 +514,7 @@ class Captcha
         $check = $this->hasher->check($value, $key);
         // if verify pass,remove session
         if ($check) {
-            $this->session->remove('captcha');
+            // $this->session->remove('captcha'); // disabled
         }
 
         return $check;
