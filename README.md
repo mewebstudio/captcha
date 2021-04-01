@@ -162,7 +162,7 @@ and verify the captcha using this method:
     }
 ```
 ## Fork Updates
-These updates were made for Session Mode. It was formed for a mixture of AJAX contact forms and payment form that validates information on POST. The AJAX forms do not need captcha to be retained for validation, but any form that validates with POST does need a way to track when successful captcha has been entered. We use this method:
+These updates were made for Session Mode. It was designed for a mixture of AJAX contact forms and data entry forms that validates information on POST with HTTP request. The AJAX forms do not need captcha to be retained for validation, but any form that validates with POST and HTTP request does need a way to track when successful captcha has been entered. We use this method:
 
 ```php
     /**
@@ -182,12 +182,12 @@ These updates were made for Session Mode. It was formed for a mixture of AJAX co
         return $retCaptcha;
     }
 ```
-Since `$errors` are only available in Laravel at the blade level, we use this code in blade prior to displaying the form. We have the words `security code` in a custom message for errors on the captcha field, so that is what we search for. Blade request on POST forms:
+Since `$errors` are only available in Laravel at the blade level, we use the code below in blade prior to displaying the form. We have the words `security code` in a custom message for errors on the captcha field, so that is what we search for (above). Blade request on POST forms:
 ```php
 if ((isset($captcha)) && (count($errors) > 0)) { 
   $captcha = JForms::checkCaptcha($errors, $captcha); }
 ```
-We are calculating whether the session `['captcha.valid']` is 'yes' or 'no'. After POST forms are processed and stored we run one last command in form controller to remove valid = yes:
+We determine whether the session `['captcha.valid']` should be 'yes' or 'no'. After data POST forms are processed and stored we run one last command in form controller to remove valid = yes:
 
 ```Session::forget('captcha');```
 
