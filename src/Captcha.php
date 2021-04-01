@@ -172,7 +172,7 @@ class Captcha
     /**
      * @var int
      */
-    protected $textLeftPadding = 9; // was 4
+    protected $textLeftPadding = 8; // was 4
 
     /**
      * @var string
@@ -256,7 +256,6 @@ class Captcha
 
         $this->configure($config);
 
-        /** Determine which $bag to use for captcha text */
         if ($this->session->has('captcha')) {
             $captcha = $this->session->get('captcha');
         } else {
@@ -269,7 +268,6 @@ class Captcha
             $generator = $this->generate();
             $this->text = $generator['value'];
         }
-        /** End of additional code */
 
         $this->canvas = $this->imageManager->canvas(
             $this->width,
@@ -502,9 +500,11 @@ class Captcha
             return false;
         }
 
-        $key = $this->session->get('captcha.key');
-        $sensitive = $this->session->get('captcha.sensitive');
-        $encrypt = $this->session->get('captcha.encrypt');
+        $captcha = $this->session->get('captcha');
+        $value_match = $captcha['value'];
+        $key = $captcha['key'];
+        $sensitive = $captcha['sensitive'];
+        $encrypt = $captcha['encrypt'];
 
         if (!$sensitive) {
             $value = $this->str->lower($value);
@@ -512,9 +512,9 @@ class Captcha
 
         if($encrypt) $key = Crypt::decrypt($key);
         $check = $this->hasher->check($value, $key);
-        // if verify pass,remove session
-        if ($check) {
-            // $this->session->remove('captcha'); // disabled
+        // user captcha does not match captcha
+        if ($value_match != $value) {
+            $this->session->remove('captcha');
         }
 
         return $check;
