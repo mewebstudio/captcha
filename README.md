@@ -182,7 +182,8 @@ These updates were made for Session Mode. It was designed for a mixture of AJAX 
         return $retCaptcha;
     }
 ```
-Since `$errors` are only available in Laravel at the blade level, we use the code below in blade prior to displaying the form. We have the words `security code` in a custom message for errors on the captcha field, so that is what we search for (above). Blade request on POST forms:
+Since `$errors` are only available in Laravel at the blade level, we use the code below in blade prior to displaying the form. We have the words `security code` in a custom message for errors on the captcha field, so that is what we search for (above). In the blade for data POST forms we determine what the content of captcha field should be (empty if not valid):
+
 ```php
 if ((isset($captcha)) && (count($errors) > 0)) { 
   $captcha = JForms::checkCaptcha($errors, $captcha); }
