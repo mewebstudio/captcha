@@ -16,15 +16,15 @@
 	"require": {
 		"php": "^7.2|^8.0",
 		"ext-gd": "*",
-		"illuminate/config": "~5|^6|^7|^8",
-		"illuminate/filesystem": "~5|^6|^7|^8",
-		"illuminate/support": "~5|^6|^7|^8",
-		"illuminate/hashing": "~5|^6|^7|^8",
-		"illuminate/session": "~5|^6|^7|^8",
+		"illuminate/config": "~5|^6|^7|^8|^9",
+		"illuminate/filesystem": "~5|^6|^7|^8|^9",
+		"illuminate/support": "~5|^6|^7|^8|^9",
+		"illuminate/hashing": "~5|^6|^7|^8|^9",
+		"illuminate/session": "~5|^6|^7|^8|^9",
 		"intervention/image": "~2.5"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "^8.5",
+		"phpunit/phpunit": "^8.5|^9.0",
 		"mockery/mockery": "^1.0"
 	},
 	"autoload": {
