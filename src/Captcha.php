@@ -188,7 +188,12 @@ class Captcha
      * @var bool
      */
     protected $encrypt = true;
-    
+
+    /**
+     * @var int
+     */
+    protected $marginTop = 0;
+
     /**
      * Constructor
      *
@@ -342,7 +347,7 @@ class Captcha
 
         $hash = $this->hasher->make($key);
         if($this->encrypt) $hash = Crypt::encrypt($hash);
-        
+
         $this->session->put('captcha', [
             'sensitive' => $this->sensitive,
             'key' => $hash,
@@ -364,6 +369,9 @@ class Captcha
     protected function text(): void
     {
         $marginTop = $this->image->height() / $this->length;
+        if ($this->marginTop !== 0) {
+            $marginTop = $this->marginTop;
+        }
 
         $text = $this->text;
         if (is_string($text)) {
@@ -483,7 +491,7 @@ class Captcha
 
         return $check;
     }
-    
+
     /**
      * Returns the md5 short version of the key for cache
      *
@@ -492,7 +500,7 @@ class Captcha
      */
     protected function get_cache_key($key) {
         return 'captcha_' . md5($key);
-    }    
+    }
 
     /**
      * Captcha check
