@@ -18,9 +18,11 @@ for Laravel 4 [Captcha for Laravel Laravel 4](https://github.com/mewebstudio/cap
   * [Installation](#installation)
   * [Usage](#usage)
   * [Configuration](#configuration)
+    + [Custom settings:](#custom-settings)
+    + [Disable validation:](#disable-validation)
   * [Example Usage](#example-usage)
-    + [Session Mode:](#session-mode-)
-    + [Stateless Mode:](#stateless-mode-)
+    + [Session Mode:](#session-mode)
+    + [Stateless Mode:](#stateless-mode)
 - [Return Image](#return-image)
 - [Return URL](#return-url)
 - [Return HTML](#return-html)
@@ -94,8 +96,9 @@ for Laravel 5.1+
     ]
 ```
 
-## Configuration
 
+## Configuration
+### Custom settings:
 To use your own settings, publish config.
 
 ```$ php artisan vendor:publish```
@@ -115,6 +118,13 @@ return [
     // ...
 ];
 ```
+### Disable validation:
+To disable the captcha validation use `CAPTCHA_DISABLE` environment variable. e.g. **.env** config:
+
+```php
+CAPTCHA_DISABLE=true
+```
+
 
 ## Example Usage
 ### Session Mode:
