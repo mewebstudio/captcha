@@ -172,7 +172,7 @@ class Captcha
     /**
      * @var int
      */
-    protected $textLeftPadding = 8; // was 4
+    protected $textLeftPadding = 4;
 
     /**
      * @var string
@@ -188,7 +188,12 @@ class Captcha
      * @var bool
      */
     protected $encrypt = true;
-    
+
+    /**
+     * @var int
+     */
+    protected $marginTop = 0;
+
     /**
      * Constructor
      *
@@ -256,18 +261,8 @@ class Captcha
 
         $this->configure($config);
 
-        if ($this->session->has('captcha')) {
-            $captcha = $this->session->get('captcha');
-        } else {
-            $captcha = array('valid' => 'no');
-        }
-
-        if ($captcha['valid'] == 'yes') {
-            $this->text = $this->keep($captcha['value']);
-        } else {
-            $generator = $this->generate();
-            $this->text = $generator['value'];
-        }
+        $generator = $this->generate();
+        $this->text = $generator['value'];
 
         $this->canvas = $this->imageManager->canvas(
             $this->width,
@@ -303,9 +298,7 @@ class Captcha
             $this->image->blur($this->blur);
         }
 
-        if ($api) {
-            Cache::put('captcha_record_' . $generator['key'], $generator['value'], $this->expire);
-        }
+        Cache::put($this->get_cache_key($generator['key']), $generator['value'], $this->expire);
 
         return $api ? [
             'sensitive' => $generator['sensitive'],
@@ -352,10 +345,8 @@ class Captcha
 
         $hash = $this->hasher->make($key);
         if($this->encrypt) $hash = Crypt::encrypt($hash);
-        
+
         $this->session->put('captcha', [
-            'value' => $key, // added captcha string
-            'valid' => 'no', // added verification 
             'sensitive' => $this->sensitive,
             'key' => $hash,
             'encrypt' => $this->encrypt
@@ -363,31 +354,9 @@ class Captcha
 
         return [
             'value' => $bag,
-            'valid' => 'no', // added verification 
             'sensitive' => $this->sensitive,
             'key' => $hash
         ];
-    }
-
-    /**
-     * Keep existing captcha text - this is an addition
-     * 
-     * @param  string $bag keep existing captcha session
-     * @return  string  
-     */
-    protected function keep($bag)
-    {
-        $hash = $this->hasher->make($bag);
-        if($this->encrypt) $hash = Crypt::encrypt($hash);
-
-        $this->session->put('captcha', [
-            'value' => $bag, // added captcha value
-            'sensitive' => $this->sensitive,
-            'key' => $hash,
-            'encrypt' => $this->encrypt
-        ]);
-
-        return $bag;
     }
 
     /**
@@ -398,6 +367,9 @@ class Captcha
     protected function text(): void
     {
         $marginTop = $this->image->height() / $this->length;
+        if ($this->marginTop !== 0) {
+            $marginTop = $this->marginTop;
+        }
 
         $text = $this->text;
         if (is_string($text)) {
@@ -500,11 +472,14 @@ class Captcha
             return false;
         }
 
-        $captcha = $this->session->get('captcha');
-        $value_match = $captcha['value'];
-        $key = $captcha['key'];
-        $sensitive = $captcha['sensitive'];
-        $encrypt = $captcha['encrypt'];
+        $key = $this->session->get('captcha.key');
+        $sensitive = $this->session->get('captcha.sensitive');
+        $encrypt = $this->session->get('captcha.encrypt');
+
+        if (!Cache::pull($this->get_cache_key($key))) {
+            $this->session->remove('captcha');
+            return false;
+        }
 
         if (!$sensitive) {
             $value = $this->str->lower($value);
@@ -512,12 +487,22 @@ class Captcha
 
         if($encrypt) $key = Crypt::decrypt($key);
         $check = $this->hasher->check($value, $key);
-        // user captcha does not match captcha
-        if ($value_match != $value) {
+        // if verify pass,remove session
+        if ($check) {
             $this->session->remove('captcha');
         }
 
         return $check;
+    }
+
+    /**
+     * Returns the md5 short version of the key for cache
+     *
+     * @param string $key
+     * @return string
+     */
+    protected function get_cache_key($key) {
+        return 'captcha_' . md5($key);
     }
 
     /**
@@ -530,7 +515,7 @@ class Captcha
      */
     public function check_api($value, $key, $config = 'default'): bool
     {
-        if (!Cache::pull('captcha_record_' . $key)) {
+        if (!Cache::pull($this->get_cache_key($key))) {
             return false;
         }
 
