@@ -1,4 +1,4 @@
-# Captcha for Laravel 5/6/7/8
+# Captcha for Laravel 5/6/7/8/9
 
 [![Build Status](https://travis-ci.org/mewebstudio/captcha.svg?branch=master)](https://travis-ci.org/mewebstudio/captcha) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mewebstudio/captcha/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mewebstudio/captcha/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/mews/captcha/v/stable.svg)](https://packagist.org/packages/mews/captcha)
@@ -6,22 +6,23 @@
 [![License](https://poser.pugx.org/mews/captcha/license.svg)](https://packagist.org/packages/mews/captcha)
 [![Total Downloads](https://poser.pugx.org/mews/captcha/downloads.svg)](https://packagist.org/packages/mews/captcha)
 
-A simple [Laravel 5/6/7/8](http://www.laravel.com/) service provider for including the [Captcha for Laravel](https://github.com/mewebstudio/captcha).
+A simple [Laravel 5/6](http://www.laravel.com/) service provider for including the [Captcha for Laravel](https://github.com/mewebstudio/captcha).
 
 for Laravel 4 [Captcha for Laravel Laravel 4](https://github.com/mewebstudio/captcha/tree/master-l4)
 
 ## Preview
 ![Preview](https://image.ibb.co/kZxMLm/image.png)
 
-- [Captcha for Laravel 5/6/7/8](#captcha-for-laravel-5-6-7-8)
+- [Captcha for Laravel 5/6/7](#captcha-for-laravel-5-6-7)
   * [Preview](#preview)
   * [Installation](#installation)
   * [Usage](#usage)
   * [Configuration](#configuration)
+    + [Custom settings:](#custom-settings)
+    + [Disable validation:](#disable-validation)
   * [Example Usage](#example-usage)
-    + [Session Mode:](#session-mode-)
-    + [Stateless Mode:](#stateless-mode-)
-  * [Fork Updates](#fork-updates)
+    + [Session Mode:](#session-mode)
+    + [Stateless Mode:](#stateless-mode)
 - [Return Image](#return-image)
 - [Return URL](#return-url)
 - [Return HTML](#return-html)
@@ -40,7 +41,7 @@ project's `composer.json`.
         "laravel/framework": "5.0.*",
         "mews/captcha": "~2.0"
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "stable"
 }
 ```
 
@@ -95,8 +96,9 @@ for Laravel 5.1+
     ]
 ```
 
-## Configuration
 
+## Configuration
+### Custom settings:
 To use your own settings, publish config.
 
 ```$ php artisan vendor:publish```
@@ -111,11 +113,18 @@ return [
         'height'    => 36,
         'quality'   => 90,
         'math'      => true,  //Enable Math Captcha
-        'expire'    => 60,    //Stateless/API captcha expiration
+        'expire'    => 60,    //Captcha expiration
     ],
     // ...
 ];
 ```
+### Disable validation:
+To disable the captcha validation use `CAPTCHA_DISABLE` environment variable. e.g. **.env** config:
+
+```php
+CAPTCHA_DISABLE=true
+```
+
 
 ## Example Usage
 ### Session Mode:
@@ -150,7 +159,7 @@ and verify the captcha using this method:
     //key is the one that you got from json response
     // fix validator
     // $rules = ['captcha' => 'required|captcha_api:'. request('key')];
-    $rules = ['captcha' => 'required|captcha_api:'. request('key') . ',default'];
+    $rules = ['captcha' => 'required|captcha_api:'. request('key') . ',math'];
     $validator = validator()->make(request()->all(), $rules);
     if ($validator->fails()) {
         return response()->json([
@@ -161,43 +170,6 @@ and verify the captcha using this method:
         //do the job
     }
 ```
-## Fork Updates
-These updates were made for Session Mode. It was designed for a mixture of AJAX contact forms and data entry forms that validates information on POST with HTTP request. The AJAX forms do not need captcha to be retained for validation, but any form that validates with POST and HTTP request does need a way to track when successful captcha has been entered. We use this method:
-
-```php
-    /**
-     * Has captcha passed validation or failed?
-     * @param  object $errors  message bag of errors returned
-     * @param  string $captcha captcha value entered by user
-     * @return string          return correct captcha value to resubmit or empty string if failed
-     */
-    public static function checkCaptcha($errors, $captcha)
-    {
-        $errorCap = $errors->first('captcha');
-        if (substr_count($errorCap, 'security code') == 1) { $retCaptcha = '';
-            session(['captcha.valid' => 'no']); }
-        else { $retCaptcha = $captcha;  
-            session(['captcha.valid' => 'yes']); }
-
-        return $retCaptcha;
-    }
-```
-Since `$errors` are only available in Laravel at the blade level, we use the code below in blade prior to displaying the form. We have the words `security code` in a custom message for errors on the captcha field, so that is what we search for (above). In the blade for data POST forms we determine what the content of captcha field should be (empty if not valid) before displaying the form:
-
-```php
-if ((isset($captcha)) && (count($errors) > 0)) { 
-  $captcha = JForms::checkCaptcha($errors, $captcha); }
-```
-We determine whether the session `['captcha.valid']` should be 'yes' or 'no'. After data POST forms are processed and stored we run one last command in form controller to remove valid = yes:
-
-```Session::forget('captcha');```
-
-In the event someone starts the POST form, enters valid captcha, then abandons form, we also place the session forget code (shown above) in the AJAX form controllers before displaying form.
-
-### Untested Option
-Instead of posting to session whether captcha is valid, we have not tested the possibility of using the session flash method in Laravel which only persists for the current and one additional HTTP request:
-
-```Session::flash('captcha.valid', 'yes');```
 
 # Return Image
 ```php
