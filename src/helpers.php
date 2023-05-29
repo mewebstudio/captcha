@@ -29,11 +29,12 @@ if (!function_exists('captcha_img')) {
 
     /**
      * @param string $config
+     * @param array $attrs
      * @return string
      */
-    function captcha_img(string $config = 'default'): string
+    function captcha_img(string $config = 'default', array $attrs = []): string
     {
-        return app('captcha')->img($config);
+        return app('captcha')->img($config, $attrs);
     }
 }
 
