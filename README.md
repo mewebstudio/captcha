@@ -41,7 +41,7 @@ project's `composer.json`.
         "laravel/framework": "5.0.*",
         "mews/captcha": "~2.0"
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "stable"
 }
 ```
 
