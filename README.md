@@ -96,6 +96,8 @@ for Laravel 5.1+
     ]
 ```
 
+For Laravel 11 : you do not need to add the alias, it will be added automatically.
+
 
 ## Configuration
 ### Custom settings:
@@ -129,7 +131,6 @@ CAPTCHA_DISABLE=true
 ## Example Usage
 ### Session Mode:
 ```php
-
     // [your site path]/Http/routes.php
     Route::any('captcha-test', function() {
         if (request()->getMethod() == 'POST') {
@@ -150,6 +151,33 @@ CAPTCHA_DISABLE=true
         $form .= '</form>';
         return $form;
     });
+```
+Detailed Example in Laravel way
+view files
+```html
+    //register.blade.php
+    <img src="{{ captcha_src() }}" alt="captcha">
+        <div class="mt-2"></div>
+        <input 
+            type="text" name="captcha" class="form-control @error('captcha') is-invalid @enderror" placeholder="Please Insert Captch"
+            >
+         @error('captcha') 
+         <div class="invalid-feedback">{{ $message }}</div> @enderror 
+```
+controller files
+```php
+        Validator::make($input, [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique(User::class),
+            ],
+            'password' => $this->passwordRules(),
+            'captcha' => 'required|captcha'
+        ])->validate();
 ```
 ### Stateless Mode:
 You get key and img from this url
