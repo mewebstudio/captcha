@@ -1,4 +1,4 @@
-# Captcha for Laravel 5/6/7/8/9
+# Captcha for Laravel 10/11
 
 [![Build Status](https://travis-ci.org/mewebstudio/captcha.svg?branch=master)](https://travis-ci.org/mewebstudio/captcha) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/mewebstudio/captcha/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/mewebstudio/captcha/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/mews/captcha/v/stable.svg)](https://packagist.org/packages/mews/captcha)
@@ -39,7 +39,7 @@ project's `composer.json`.
 {
     "require": {
         "laravel/framework": "5.0.*",
-        "mews/captcha": "~2.0"
+        "mews/captcha": "~3.0"
     },
     "minimum-stability": "stable"
 }
@@ -247,4 +247,4 @@ Based on [Intervention Image](https://github.com/Intervention/image)
 * [License](http://www.opensource.org/licenses/mit-license.php)
 * [Laravel website](http://laravel.com)
 * [Laravel Turkiye website](http://www.laravel.gen.tr)
-* [MeWebStudio website](http://www.mewebstudio.com)
+* [mewebstudio](https://github.com/mewebstudio/captcha)
