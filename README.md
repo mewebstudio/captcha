@@ -10,6 +10,8 @@ A simple [Laravel 5/6](http://www.laravel.com/) service provider for including t
 
 for Laravel 4 [Captcha for Laravel Laravel 4](https://github.com/mewebstudio/captcha/tree/master-l4)
 
+for Laravel 5 to 9 [Captcha for Laravel Laravel 4](https://github.com/mewebstudio/captcha/tree/master-l5-l9)
+
 ## Preview
 ![Preview](https://image.ibb.co/kZxMLm/image.png)
 
