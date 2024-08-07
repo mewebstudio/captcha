@@ -29,8 +29,6 @@ use Illuminate\Session\Store as Session;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Http\Response;
-
 
 /**
  * Class Captcha
