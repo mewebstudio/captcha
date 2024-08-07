@@ -117,6 +117,11 @@ class Captcha
     protected $lines = 3;
 
     /**
+     * @var int
+     */
+    protected $lineWidth = 1;
+
+    /**
      * @var string
      */
     protected $characters;
@@ -455,8 +460,8 @@ class Captcha
             $this->image->drawLine(function (LineFactory $line) use ($i) {
                 $line->from(rand(0, $this->image->width()) + $i * rand(0, $this->image->height()) , rand(0, $this->image->height()));
                 $line->to( rand(0, $this->image->width()), rand(0, $this->image->height()));
-                $line->color('ff00ff'); // color of line
-                $line->width(5); // line width in pixels
+                $line->color($this->fontColor()); // color of line
+                $line->width($this->lineWidth); // line width in pixels
             });
         }
 
