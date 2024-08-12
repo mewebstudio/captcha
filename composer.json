@@ -9,6 +9,7 @@
 		"laravel5 Security",
 		"Captcha"
 	],
+	"version": "4.0.0",
 	"homepage": "https://github.com/mewebstudio/captcha",
 	"license": "MIT",
 	"authors": [
