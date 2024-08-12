@@ -1,8 +1,14 @@
 {
-	"name": "mews/captcha",
+	"name": "niyazvpp/captcha",
 	"type": "package",
 	"description": "Laravel 5/6/7/8/9/10/11 Captcha Package",
-	"keywords": ["laravel6 Captcha", "laravel6 Security", "laravel6 Captcha", "laravel5 Security", "Captcha"],
+	"keywords": [
+		"laravel6 Captcha",
+		"laravel6 Security",
+		"laravel6 Captcha",
+		"laravel5 Security",
+		"Captcha"
+	],
 	"homepage": "https://github.com/mewebstudio/captcha",
 	"license": "MIT",
 	"authors": [
@@ -14,7 +20,7 @@
 		}
 	],
 	"require": {
-    "php": "^7.2|^8.1|^8.2|^8.3",
+		"php": "^7.2|^8.1|^8.2|^8.3",
 		"ext-gd": "*",
 		"illuminate/config": "~5|^6|^7|^8|^9|^10|^11",
 		"illuminate/filesystem": "~5|^6|^7|^8|^9|^10|^11",
