@@ -5,6 +5,7 @@ namespace Mews\Captcha;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Factory;
+use Intervention\Image\Drivers\Gd\Driver;
 
 /**
  * Class CaptchaServiceProvider
@@ -25,7 +26,7 @@ class CaptchaServiceProvider extends ServiceProvider
         ], 'config');
 
         // HTTP routing
-        if(!config('captcha.disable')){
+        if (!config('captcha.disable')) {
             if (strpos($this->app->version(), 'Lumen') !== false) {
                 /* @var Router $router */
                 $router = $this->app;
@@ -34,7 +35,7 @@ class CaptchaServiceProvider extends ServiceProvider
             } else {
                 /* @var Router $router */
                 $router = $this->app['router'];
-                if ((double)$this->app->version() >= 5.2) {
+                if ((float)$this->app->version() >= 5.2) {
                     $router->get('captcha/api/{config?}', '\Mews\Captcha\CaptchaController@getCaptchaApi')->middleware('web');
                     $router->get('captcha/{config?}', '\Mews\Captcha\CaptchaController@getCaptcha')->middleware('web');
                 } else {
@@ -70,6 +71,13 @@ class CaptchaServiceProvider extends ServiceProvider
             __DIR__ . '/../config/captcha.php',
             'captcha'
         );
+
+        // if Intervention\Image\ImageManager is not bound
+        if (!$this->app->bound('Intervention\Image\ImageManager')) {
+            $this->app->singleton('Intervention\Image\ImageManager', function ($app) {
+                return new \Intervention\Image\ImageManager(new Driver());
+            });
+        }
 
         // Bind captcha
         $this->app->bind('captcha', function ($app) {

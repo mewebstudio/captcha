@@ -29,7 +29,6 @@ use Illuminate\Session\Store as Session;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
-use Illuminate\Http\Response;
 
 
 /**
@@ -273,7 +272,7 @@ class Captcha
         $generator = $this->generate();
         $this->text = $generator['value'];
 
-        $this->canvas = $this->imageManager->create($this->width , $this->height)->fill($this->fill);
+        $this->canvas = $this->imageManager->create($this->width, $this->height)->fill($this->fill);
 
 
         if ($this->bgImage) {
@@ -353,7 +352,7 @@ class Captcha
         }
 
         $hash = $this->hasher->make($key);
-        if($this->encrypt) $hash = Crypt::encrypt($hash);
+        if ($this->encrypt) $hash = Crypt::encrypt($hash);
 
         $this->session->put('captcha', [
             'sensitive' => $this->sensitive,
@@ -455,8 +454,8 @@ class Captcha
     {
         for ($i = 0; $i <= $this->lines; $i++) {
             $this->image->drawLine(function (LineFactory $line) use ($i) {
-                $line->from(rand(0, $this->image->width()) + $i * rand(0, $this->image->height()) , rand(0, $this->image->height()));
-                $line->to( rand(0, $this->image->width()), rand(0, $this->image->height()));
+                $line->from(rand(0, $this->image->width()) + $i * rand(0, $this->image->height()), rand(0, $this->image->height()));
+                $line->to(rand(0, $this->image->width()), rand(0, $this->image->height()));
                 $line->color('ff00ff'); // color of line
                 $line->width(5); // line width in pixels
             });
@@ -490,7 +489,7 @@ class Captcha
             $value = $this->str->lower($value);
         }
 
-        if($encrypt) $key = Crypt::decrypt($key);
+        if ($encrypt) $key = Crypt::decrypt($key);
         $check = $this->hasher->check($value, $key);
         // if verify pass,remove session
         if ($check) {
@@ -506,7 +505,8 @@ class Captcha
      * @param string $key
      * @return string
      */
-    protected function get_cache_key($key) {
+    protected function get_cache_key($key)
+    {
         return 'captcha_' . md5($key);
     }
 
@@ -526,8 +526,8 @@ class Captcha
 
         $this->configure($config);
 
-        if(!$this->sensitive) $value = $this->str->lower($value);
-        if($this->encrypt) $key = Crypt::decrypt($key);
+        if (!$this->sensitive) $value = $this->str->lower($value);
+        if ($this->encrypt) $key = Crypt::decrypt($key);
         return $this->hasher->check($value, $key);
     }
 
