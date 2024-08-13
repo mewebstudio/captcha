@@ -19,7 +19,6 @@ use Illuminate\Contracts\Config\Repository;
 use Illuminate\Hashing\BcryptHasher as Hasher;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\File;
-use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 use Intervention\Image\Gd\Font;
 use Intervention\Image\Geometry\Factories\LineFactory;
