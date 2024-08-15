@@ -3,9 +3,11 @@
 namespace Mews\Captcha;
 
 use Illuminate\Routing\Router;
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Factory;
-use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
+use Illuminate\Support\ServiceProvider;
+use Intervention\Image\Drivers\Gd\Driver as GdDriver;
+use Intervention\Image\Drivers\Imagick\Driver as ImagickDriver;
 
 /**
  * Class CaptchaServiceProvider
@@ -72,9 +74,13 @@ class CaptchaServiceProvider extends ServiceProvider
             'captcha'
         );
 
-        if (!$this->app->bound('Intervention\Image\ImageManager')) {
+         // Bind the ImageManager with an explicit driver
+         if (!$this->app->bound('Intervention\Image\ImageManager')) {
             $this->app->singleton('Intervention\Image\ImageManager', function ($app) {
-                return new \Intervention\Image\ImageManager(new Driver());
+                // Determine which driver to use, defaulting to 'gd'
+                $driver = config('captcha.driver', 'gd') === 'imagick' ? new ImagickDriver() : new GdDriver();
+
+                return new ImageManager($driver);
             });
         }
 
