@@ -5,6 +5,7 @@ namespace Mews\Captcha;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Factory;
+use Intervention\Image\Drivers\Gd\Driver;
 
 /**
  * Class CaptchaServiceProvider
@@ -70,6 +71,12 @@ class CaptchaServiceProvider extends ServiceProvider
             __DIR__ . '/../config/captcha.php',
             'captcha'
         );
+
+        if (!$this->app->bound('Intervention\Image\ImageManager')) {
+            $this->app->singleton('Intervention\Image\ImageManager', function ($app) {
+                return new \Intervention\Image\ImageManager(new Driver());
+            });
+        }
 
         // Bind captcha
         $this->app->bind('captcha', function ($app) {
