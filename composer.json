@@ -14,7 +14,7 @@
 		}
 	],
 	"require": {
-		"freejett/custom-captcha": "master",
+		"freejett/custom-captcha": "master@dev",
 		"php": "^7.2|^8.1|^8.2|^8.3",
 			"ext-gd": "*",
 			"illuminate/config": "~5|^6|^7|^8|^9|^10|^11",
