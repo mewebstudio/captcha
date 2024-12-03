@@ -29,7 +29,7 @@
 		"mockery/mockery": "^1.0"
 	},
 	"repositories": {
-		"mongogento": {
+		"custom-captcha": {
 			"type": "vcs",
 			"url": "https://github.com/freejett/custom-captcha/"
 		}
