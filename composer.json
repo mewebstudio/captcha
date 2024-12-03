@@ -1,7 +1,7 @@
 {
-	"name": "mews/captcha",
+	"name": "freejett/custom-captcha",
 	"type": "package",
-	"description": "Laravel 5/6/7/8/9/10/11 Captcha Package",
+	"description": "Laravel 11 Captcha With Own Steing Package",
 	"keywords": ["laravel6 Captcha", "laravel6 Security", "laravel6 Captcha", "laravel5 Security", "Captcha"],
 	"homepage": "https://github.com/mewebstudio/captcha",
 	"license": "MIT",
@@ -29,7 +29,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"Mews\\Captcha\\": "src/"
+			"FreeJett\\Captcha\\": "src/"
 		},
 		"files": [
 			"src/helpers.php"
@@ -47,10 +47,10 @@
 	"extra": {
 		"laravel": {
 			"providers": [
-				"Mews\\Captcha\\CaptchaServiceProvider"
+				"FreeJett\\Captcha\\CaptchaServiceProvider"
 			],
 			"aliases": {
-				"Captcha": "Mews\\Captcha\\Facades\\Captcha"
+				"Captcha": "FreeJett\\Captcha\\Facades\\Captcha"
 			}
 		}
 	}
