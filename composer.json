@@ -47,7 +47,7 @@
 			"tests"
 		],
 		"psr-4": {
-			"Mews\\Test\\": "tests/"
+			"Freejett\\Test\\": "tests/"
 		}
 	},
 	"minimum-stability": "stable",
