@@ -3,13 +3,13 @@
 	"type": "package",
 	"description": "Laravel 11 Captcha With Own Steing Package",
 	"keywords": ["laravel6 Captcha", "laravel6 Security", "laravel6 Captcha", "laravel5 Security", "Captcha"],
-	"homepage": "https://github.com/mewebstudio/captcha",
+	"homepage": "https://github.com/freejett/custom-captcha",
 	"license": "MIT",
 	"authors": [
 		{
-			"name": "Muharrem ERİN",
-			"email": "me@mewebstudio.com",
-			"homepage": "https://github.com/mewebstudio",
+			"name": "Jett",
+			"email": "jt87@ya.ru",
+			"homepage": "https://github.com/freejett",
 			"role": "Developer"
 		}
 	],
