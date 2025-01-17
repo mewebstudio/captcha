@@ -105,7 +105,7 @@ For Laravel 11 : you do not need to add the alias, it will be added automaticall
 ### Custom settings:
 To use your own settings, publish config.
 
-```$ php artisan vendor:publish```
+```$ php artisan vendor:publish --provider="Mews\Captcha\CaptchaServiceProvider"```
 
 `config/captcha.php`
 
