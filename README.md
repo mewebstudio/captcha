@@ -81,7 +81,7 @@ for Laravel 5.1+
         Mews\Captcha\CaptchaServiceProvider::class,
     ]
 ```
-For Laravel 11+ you can add the provider to 'bootstrap\providers.php'.
+For Laravel 11+ you can add the provider to `bootstrap\providers.php`.
 ```php
 return [
     // ...
