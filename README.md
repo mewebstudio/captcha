@@ -81,6 +81,13 @@ for Laravel 5.1+
         Mews\Captcha\CaptchaServiceProvider::class,
     ]
 ```
+For Laravel 11+ you can add the provider to `bootstrap\providers.php`.
+```php
+return [
+    // ...
+    Mews\Captcha\CaptchaServiceProvider::class
+];
+```
 
 Find the `aliases` key in `config/app.php`.
 
@@ -98,7 +105,7 @@ for Laravel 5.1+
     ]
 ```
 
-For Laravel 11 : you do not need to add the alias, it will be added automatically.
+For Laravel 11+ : you do not need to add the alias, it will be added automatically.
 
 
 ## Configuration
