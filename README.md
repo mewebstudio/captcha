@@ -129,6 +129,10 @@ return [
     // ...
 ];
 ```
+### Images
+To use your own custom images for a background, set 'bgImage' to true and change the 'bgsDirectory' setting to your directory you want the image(s) to be used.  
+If you just want to change the background color, then set 'bgImage' to false and the 'bgColor' will be applied.
+
 ### Disable validation:
 To disable the captcha validation use `CAPTCHA_DISABLE` environment variable. e.g. **.env** config:
 

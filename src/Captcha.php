@@ -157,6 +157,11 @@ class Captcha
      */
     protected $blur = 0;
 
+        /**
+     * @var string
+     */
+    protected $bgsDirectory;
+
     /**
      * @var bool
      */
@@ -208,11 +213,6 @@ class Captcha
     protected $marginTop = 0;
 
     /**
-     * @var string
-     */
-    protected $fill = 'ccc';
-
-    /**
      * Constructor
      *
      * @param Filesystem $files
@@ -240,6 +240,7 @@ class Captcha
         $this->str = $str;
         $this->characters = config('captcha.characters', ['1', '2', '3', '4', '6', '7', '8', '9']);
         $this->fontsDirectory = config('captcha.fontsDirectory',  dirname(__DIR__) . '/assets/fonts');
+        $this->bgsDirectory = config('captcha.bgsDirectory',  dirname(__DIR__) . '/assets/backgrounds');
     }
 
     /**
@@ -265,7 +266,7 @@ class Captcha
      */
     public function create(string $config = 'default', bool $api = false)
     {
-        $this->backgrounds = $this->files->files(__DIR__ . '/../assets/backgrounds');
+        $this->backgrounds = $this->files->files($this->bgsDirectory);
         $this->fonts = $this->files->files($this->fontsDirectory);
 
         if (version_compare(app()->version(), '5.5.0', '>=')) {
@@ -282,8 +283,7 @@ class Captcha
         $generator = $this->generate();
         $this->text = $generator['value'];
 
-        $this->canvas = $this->imageManager->create($this->width , $this->height)->fill($this->fill);
-
+        $this->canvas = $this->imageManager->create($this->width , $this->height)->fill($this->bgColor);
 
         if ($this->bgImage) {
             $this->image = $this->imageManager->read($this->background())->resize(
