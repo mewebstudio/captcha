@@ -397,7 +397,7 @@ class Captcha
         foreach ($text as $key => $char) {
             $marginLeft = $this->textLeftPadding + ($key * ($this->image->width() - $this->textLeftPadding) / $this->length);
 
-            $this->image->text($char, $marginLeft, $marginTop, function ($font) {
+            $this->image->text($char, (int) $marginLeft, (int) $marginTop, function ($font) {
                 /* @var Font $font */
                 $font->file($this->font());
                 $font->size($this->fontSize());
