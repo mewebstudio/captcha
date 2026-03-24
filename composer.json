@@ -1,8 +1,8 @@
 {
 	"name": "mews/captcha",
 	"type": "package",
-	"description": "Laravel 5/6/7/8/9/10/11/12 Captcha Package",
-	"keywords": ["laravel12 Captcha", "laravel12 Security", "laravel12 Captcha", "laravel5 Security", "Captcha"],
+	"description": "Laravel 5/6/7/8/9/10/11/12/13 Captcha Package",
+	"keywords": ["laravel Captcha", "laravel Security", "Captcha"],
 	"homepage": "https://github.com/mewebstudio/captcha",
 	"license": "MIT",
 	"authors": [
@@ -14,17 +14,17 @@
 		}
 	],
 	"require": {
-    "php": "^7.2|^8.1|^8.2|^8.3",
+    "php": "^7.2|^8.1",
 		"ext-gd": "*",
-		"illuminate/config": "~5|^6|^7|^8|^9|^10|^11|^12",
-		"illuminate/filesystem": "~5|^6|^7|^8|^9|^10|^11|^12",
-		"illuminate/support": "~5|^6|^7|^8|^9|^10|^11|^12",
-		"illuminate/hashing": "~5|^6|^7|^8|^9|^10|^11|^12",
-		"illuminate/session": "~5|^6|^7|^8|^9|^10|^11|^12",
+		"illuminate/config": "~5|^6|^7|^8|^9|^10|^11|^12|^13",
+		"illuminate/filesystem": "~5|^6|^7|^8|^9|^10|^11|^12|^13",
+		"illuminate/support": "~5|^6|^7|^8|^9|^10|^11|^12|^13",
+		"illuminate/hashing": "~5|^6|^7|^8|^9|^10|^11|^12|^13",
+		"illuminate/session": "~5|^6|^7|^8|^9|^10|^11|^12|^13",
 		"intervention/image": "^3.7"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "^8.5|^9.5.10|^10.5|^11",
+		"phpunit/phpunit": "^8.5|^9.5.10|^10.5|^11|^12",
 		"mockery/mockery": "^1.0"
 	},
 	"autoload": {
