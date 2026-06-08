@@ -14,21 +14,23 @@ namespace Mews\Captcha;
  * @license http://www.opensource.org/licenses/mit-license.php The MIT License
  */
 
+use Composer\InstalledVersions;
 use Exception;
 use Illuminate\Contracts\Config\Repository;
-use Illuminate\Hashing\BcryptHasher as Hasher;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Hashing\BcryptHasher as Hasher;
 use Illuminate\Http\File;
+use Illuminate\Http\Response;
+use Illuminate\Session\Store as Session;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
+use Intervention\Image\Format;
 use Intervention\Image\Gd\Font;
 use Intervention\Image\Geometry\Factories\LineFactory;
 use Intervention\Image\Image;
 use Intervention\Image\ImageManager;
-use Illuminate\Session\Store as Session;
-use Illuminate\Support\HtmlString;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Crypt;
-use Illuminate\Http\Response;
 
 
 /**
@@ -157,7 +159,7 @@ class Captcha
      */
     protected $blur = 0;
 
-        /**
+    /**
      * @var string
      */
     protected $bgsDirectory;
@@ -213,6 +215,11 @@ class Captcha
     protected $marginTop = 0;
 
     /**
+     * @var int
+     */
+    private $interventionVersion = null;
+
+    /**
      * Constructor
      *
      * @param Filesystem $files
@@ -241,6 +248,7 @@ class Captcha
         $this->characters = config('captcha.characters', ['1', '2', '3', '4', '6', '7', '8', '9']);
         $this->fontsDirectory = config('captcha.fontsDirectory',  dirname(__DIR__) . '/assets/fonts');
         $this->bgsDirectory = config('captcha.bgsDirectory',  dirname(__DIR__) . '/assets/backgrounds');
+        $this->interventionVersion = (int)substr(InstalledVersions::getPrettyVersion('intervention/image'), 0, 1);
     }
 
     /**
@@ -283,14 +291,24 @@ class Captcha
         $generator = $this->generate();
         $this->text = $generator['value'];
 
-        $this->canvas = $this->imageManager->create($this->width , $this->height)->fill($this->bgColor);
+        $this->canvas =
+            $this->interventionVersion === 3
+                ? $this->imageManager->create($this->width, $this->height)->fill($this->bgColor)
+                : $this->imageManager->createImage($this->width, $this->height)->fill($this->bgColor);
 
         if ($this->bgImage) {
-            $this->image = $this->imageManager->read($this->background())->resize(
+            $image = $this->interventionVersion === 3
+                ? $this->imageManager->read($this->background())
+                : $this->imageManager->decodePath($this->background());
+
+            $this->image = $image->resize(
                 $this->width,
                 $this->height
             );
-            $this->canvas->place($this->image);
+
+            $this->interventionVersion === 3
+                ? $this->canvas->place($this->image)
+                : $this->canvas->insert($this->image);;
         } else {
             $this->image = $this->canvas;
         }
@@ -315,11 +333,15 @@ class Captcha
 
         Cache::put($this->get_cache_key($generator['key']), $generator['value'], $this->expire);
 
+        $responseImg = $this->interventionVersion === 3
+            ? $this->image->toJpg()
+            : $this->image->encodeUsingFormat(Format::JPEG);
+
         return $api ? [
             'sensitive' => $generator['sensitive'],
             'key' => $generator['key'],
-            'img' => $this->image->toJpg()->toDataUri()
-        ] : new Response($this->image->toJpg(), 200, [
+            'img' => $responseImg->toDataUri(),
+        ] : new Response($responseImg, 200, [
             'Content-Type' => 'image/jpeg',
             'Content-Disposition' => 'inline; filename="image.jpg"',
         ]);
@@ -398,13 +420,17 @@ class Captcha
             $marginLeft = $this->textLeftPadding + ($key * ($this->image->width() - $this->textLeftPadding) / $this->length);
 
             $this->image->text($char, (int) $marginLeft, (int) $marginTop, function ($font) {
-                /* @var Font $font */
+                /* @var \Intervention\Image\Typography\FontFactory $font */
                 $font->file($this->font());
                 $font->size($this->fontSize());
                 $font->color($this->fontColor());
-                $font->align('left');
-                $font->valign('top');
                 $font->angle($this->angle());
+                if ($this->interventionVersion === 3) {
+                    $font->align('left');
+                    $font->valign('top');
+                } else {
+                    $font->align('left', 'top');
+                }
             });
         }
     }
