@@ -340,8 +340,8 @@ class Captcha
         return $api ? [
             'sensitive' => $generator['sensitive'],
             'key' => $generator['key'],
-            'img' => $responseImg->toDataUri(),
-        ] : new Response($responseImg, 200, [
+            'img' => (string) $responseImg->toDataUri(),
+        ] : new Response((string) $responseImg, 200, [
             'Content-Type' => 'image/jpeg',
             'Content-Disposition' => 'inline; filename="image.jpg"',
         ]);
